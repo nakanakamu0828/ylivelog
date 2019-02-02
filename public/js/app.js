@@ -3071,7 +3071,7 @@ var render = function() {
     ? _c(
         "div",
         {
-          staticClass: "absolute w-full",
+          staticClass: "absolute w-full z-10",
           class: {
             "alert-success": "success" === _vm.type,
             "alert-info": "info" === _vm.type,
