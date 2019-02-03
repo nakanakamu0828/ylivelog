@@ -8,7 +8,7 @@
       >
       <div
         class="absolute w-48 pin-t pin-r mt-12 bg-white shadow rounded border overflow-hidden"
-        :class="{ invisible: !drawer }"
+        :class="{ 'invisible': !drawer }"
       >
         <a
           href="#"
