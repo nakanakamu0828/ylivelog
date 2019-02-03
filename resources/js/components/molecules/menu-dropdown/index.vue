@@ -10,6 +10,12 @@
         class="absolute w-48 pin-t pin-r mt-12 bg-white shadow rounded border overflow-hidden"
         :class="{ 'invisible': !drawer }"
       >
+        <router-link
+          to="/archive"
+          class="no-underline block px-4 py-3 border-b text-grey-darkest bg-white hover:text-white hover:bg-grey whitespace-no-wrap"
+        >
+          アーカイブ
+        </router-link>
         <a
           href="#"
           class="no-underline block px-4 py-3 border-b text-grey-darkest bg-white hover:text-white hover:bg-grey whitespace-no-wrap"

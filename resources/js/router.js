@@ -2,6 +2,7 @@ import Vue from 'vue'
 import VueRouter from 'vue-router'
 
 import Home from '~/components/pages/Home.vue'
+import Archive from '~/components/pages/archive/index.vue'
 import NotFound from '~/components/pages/NotFound.vue'
 
 import store from './store'
@@ -15,6 +16,17 @@ const routes = [
   {
     path: '/',
     component: Home
+  },
+  {
+    path: '/archive',
+    component: Archive,
+    beforeEnter (to, from, next) {
+      if (store.getters['auth/isLoggined']) {
+        next()
+      } else {
+        next('/')
+      }
+    }
   },
   {
     path: '*',

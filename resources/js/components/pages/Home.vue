@@ -9,7 +9,7 @@
         
       <div class="w-full sm:max-w-sm pt-5">
         <message-box
-          title="ご利用に当たる注意点"
+          title="ご利用にあたっての注意点"
           message="Youtube Liveを配信しているGoogleアカウントのみチャットログを取得することが可能です"
         />
 
@@ -108,6 +108,7 @@ export default {
     intervalId: null,
     video: null,
     posts: [],
+    timerId: null,
   }),
   validations: {
     form: {
@@ -144,12 +145,12 @@ export default {
       console.log(response)
       this.video = {
         title: response.data.title,
-        imageUrl: response.data.image_url
+        image_url: response.data.image_url
       }
       this.form.nextPageToken = response.data.nextPageToken
       this.posts = [...response.data.posts.slice().reverse(), ...this.posts]
 
-      setTimeout(this.submit, 5000);
+      this.timerId = setTimeout(this.submit, 5000);
     },
   },
   computed: {
@@ -158,6 +159,11 @@ export default {
     },
     user () {
       return this.$store.getters['auth/user']
+    }
+  },
+  beforeDestroy: function () {
+    if (this.timerId) {
+      clearTimeout(this.timerId);
     }
   }
 }

@@ -4,7 +4,7 @@
   >
     <div
       class="min-h-24 lg:h-32 w-32 lg:w-48 flex-none bg-cover rounded-t-none rounded-l text-center overflow-hidden"
-      :style="{ 'background-image': 'url(' + video.imageUrl + ')' }"
+      :style="{ 'background-image': 'url(' + video.image_url + ')' }"
       :title="video.title"
     >
     </div>

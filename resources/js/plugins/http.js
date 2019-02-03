@@ -1,6 +1,13 @@
 export default {
     async get (url) {
-        return fetch(url)
+        const response = await fetch(url)
+
+        const json = await response.json()
+        return {
+            status: response.status,
+            ok: response.ok,
+            data: json
+        }
     },
     async post (url, data) {
         const method = "POST";

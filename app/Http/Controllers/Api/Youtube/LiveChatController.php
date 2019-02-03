@@ -20,6 +20,24 @@ class LiveChatController extends Controller
         $client->setAccessToken(json_encode($google_client_token));
         $youtube = new \Google_Service_YouTube($client);
 
+        $broadcastsResponse = $youtube->liveBroadcasts->listLiveBroadcasts(
+            'id,snippet',
+            [
+                'id' => $request->id,
+            ]
+        );
+
+        if (
+            empty($broadcastsResponse['items'])
+            || !isset($broadcastsResponse['items'][0]["snippet"]["liveChatId"])
+        ) {
+            return response()->json([
+                'status' => 404,
+                'message' => 'データが見つかりませんでした',
+            ], 404);
+        }
+
+
         $video = Auth::user()->videos()->firstOrNew(['v' => $request->id]);
         if (!$video->id) {
             $videoResponse = $youtube->videos->listVideos('snippet', array(
@@ -39,23 +57,6 @@ class LiveChatController extends Controller
             $video->title = $videoResponse['items'][0]["snippet"]["title"];
             $video->image_url = isset($videoResponse['items'][0]["snippet"]["thumbnails"]['standard']['url']) ? $videoResponse['items'][0]["snippet"]["thumbnails"]['standard']['url'] : null;
             $video->save();
-        }
-
-        $broadcastsResponse = $youtube->liveBroadcasts->listLiveBroadcasts(
-            'id,snippet',
-            [
-                'id' => $request->id,
-            ]
-        );
-
-        if (
-            empty($broadcastsResponse['items'])
-            || !isset($broadcastsResponse['items'][0]["snippet"]["liveChatId"])
-        ) {
-            return response()->json([
-                'status' => 404,
-                'message' => 'データが見つかりませんでした',
-            ], 404);
         }
 
         $liveChatId = $broadcastsResponse['items'][0]["snippet"]["liveChatId"];

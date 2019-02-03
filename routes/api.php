@@ -17,7 +17,9 @@ use Illuminate\Http\Request;
 //     return $request->user();
 // });
 
-Route::post('/logout', 'Auth\LoginController@logout')->name('logout');
+Route::group(['middleware' => 'auth'], function () {
+    Route::post('/logout', 'Auth\LoginController@logout')->name('logout');
+    Route::post('/youtube/livechats', 'Api\Youtube\LiveChatController@index')->name('youtube.livechats');
 
-
-Route::post('/youtube/livechats', 'Api\Youtube\LiveChatController@index')->name('youtube.livechats');
+    Route::get('/videos', 'Api\VideoController@index')->name('videos');
+});
