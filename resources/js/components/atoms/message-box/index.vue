@@ -13,7 +13,7 @@ export default {
       required: false,
     },
     message: {
-      type: Object,
+      type: String,
       required: false,
     }
   },
