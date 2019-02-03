@@ -1,7 +1,7 @@
 <template>
     <div
         v-if="message"
-        class="absolute w-full z-10"
+        class="absolute w-full z-20"
         :class="{ 'alert-success': 'success' === type, 'alert-info': 'info' === type, 'alert-error': 'error' === type }"
         role="alert">
         <div class="flex relative">

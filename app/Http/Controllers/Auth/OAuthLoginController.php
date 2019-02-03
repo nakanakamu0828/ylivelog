@@ -32,12 +32,10 @@ class OAuthLoginController extends Controller
     public function callback($provider)
     {
         $authUser = Socialite::driver($provider)->user();
-
         $user = User::updateOrCreate(
-            ['name' => $authUser->name ],
-            ['email' => $authUser->email]
+            ['email' => $authUser->email],
+            ['name' => $authUser->name, 'profile_image_url' => $authUser->avatar ]
         );
-
 
         // Set token for the Google API PHP Client
         $google_client_token = [
@@ -49,22 +47,6 @@ class OAuthLoginController extends Controller
         session()->put('google_client_token', $google_client_token);
 
         Auth::login($user);
-
-        // $client = new \Google_Client();
-        // $client->setClientId(config('services.google.client_id'));
-        // $client->setClientSecret(config('services.google.client_secret'));
-        // $client->setAccessToken(json_encode($google_client_token));
-        // $youtube = new \Google_Service_YouTube($client);
-
-        // $broadcastsResponse = $youtube->liveBroadcasts->listLiveBroadcasts(
-        //     'id,snippet',
-        //     [
-        //         'mine' => 'true',
-        //     ]
-        // );
-    
-        // dd($broadcastsResponse, $google_client_token);
-
 
         return redirect()->intended('/');
     }

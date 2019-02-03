@@ -12,19 +12,19 @@
             Home
           </router-link>
           &nbsp;/&nbsp;
-          <nuxt-link
+          <router-link
             to="/"
             class="text-white hover:text-grey-dark no-underline"
           >
             利用規約
-          </nuxt-link>
+          </router-link>
           &nbsp;/&nbsp;
-          <nuxt-link
+          <router-link
             to="/"
             class="text-white hover:text-grey-dark no-underline"
           >
             プライバシーポリシー
-          </nuxt-link>
+          </router-link>
         </div>
         <div class="w-full md:w-1/5 mb-4 flex justify-center">
         </div>

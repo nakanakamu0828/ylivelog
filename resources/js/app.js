@@ -14,7 +14,7 @@ const app = document.getElementById('app');
 if (app) {
   const currentUser = app.dataset.user
   if (currentUser) {
-    store.dispatch('auth/setUser', currentUser)
+    store.dispatch('auth/setUser', JSON.parse(currentUser))
   }
 
   new Vue({
