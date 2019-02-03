@@ -344,13 +344,13 @@ __webpack_require__.r(__webpack_exports__);
       drawer: false
     };
   },
-  created: function created() {
-    this.listen(window, 'click', function (e) {
-      if (!this.$el.contains(e.target)) {
-        this.drawer = false;
-      }
-    }.bind(this));
-  },
+  // created:function(){
+  //   this.listen(window, 'click', function(e){
+  //     if (!this.$el.contains(e.target)){
+  //       this.drawer = false
+  //     }
+  //   }.bind(this));
+  // },
   methods: {
     logout: function logout(event) {
       this.$emit('logout');

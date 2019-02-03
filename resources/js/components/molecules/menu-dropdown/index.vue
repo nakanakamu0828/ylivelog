@@ -36,13 +36,13 @@ export default {
   data: () => ({
     drawer: false
   }),
-  created:function(){
-    this.listen(window, 'click', function(e){
-      if (!this.$el.contains(e.target)){
-        this.drawer = false
-      }
-    }.bind(this));
-  },
+  // created:function(){
+  //   this.listen(window, 'click', function(e){
+  //     if (!this.$el.contains(e.target)){
+  //       this.drawer = false
+  //     }
+  //   }.bind(this));
+  // },
   methods: {
     logout(event) {
         this.$emit('logout')
