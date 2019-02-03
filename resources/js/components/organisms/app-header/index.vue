@@ -5,9 +5,9 @@
     <div class="text-center">
       <router-link
         to="/"
-        class="font-mono text-xl"
-        v-text="app_name"
+        class=""
       >
+        <img src="/img/logo.png" :alt="app_name" :title="app_name" class="w-32">
       </router-link>
       <p class="mt-2 text-xs text-grey-darken" v-text="description"></p>
     </div>
