@@ -154,7 +154,9 @@ export default {
     }
   },
   created () {
-    this.loadVideo()
+    if (this.$store.getters['auth/isLoggined']) {
+      this.loadVideo()
+    }
   },
   beforeDestroy: function () {
     if (this.timerId) {

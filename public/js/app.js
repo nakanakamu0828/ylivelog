@@ -748,7 +748,9 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
     }
   },
   created: function created() {
-    this.loadVideo();
+    if (this.$store.getters['auth/isLoggined']) {
+      this.loadVideo();
+    }
   },
   beforeDestroy: function beforeDestroy() {
     if (this.timerId) {
