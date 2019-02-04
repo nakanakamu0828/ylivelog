@@ -21,5 +21,9 @@ Route::group(['middleware' => 'auth'], function () {
     Route::post('/logout', 'Auth\LoginController@logout')->name('logout');
     Route::post('/youtube/livechats', 'Api\Youtube\LiveChatController@index')->name('youtube.livechats');
 
-    Route::get('/videos', 'Api\VideoController@index')->name('videos');
+    Route::get('/videos', 'Api\VideoController@index')->name('video');
+    Route::group(['prefix' => 'video', 'as' => 'video.'], function () {
+        Route::get('{id}', 'Api\VideoController@show')->name('show');
+        Route::get('{id}/chats', 'Api\Video\PostController@index')->name('chats');
+    });
 });

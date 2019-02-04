@@ -62,25 +62,25 @@ class LiveChatController extends Controller
         $liveChatId = $broadcastsResponse['items'][0]["snippet"]["liveChatId"];
 
         $option = [];
-        if ($request->nextPageToken) {
-            $option['pageToken'] = $request->nextPageToken;
+        if ($request->next_page_token) {
+            $option['pageToken'] = $request->next_page_token;
         }
         $liveChatMessages = $youtube->liveChatMessages->listLiveChatMessages($liveChatId, 'snippet,authorDetails', $option);
         $posts = array_map(function($item) use($video) {
             $publishedAt = new Carbon($item['snippet']['publishedAt']);
             $publishedAt->setTimezone(config('app.timezone'));
             return [
-                'id'                    => $item['id'],
-                 'v'                    => $video->id,
+                'id'                        => $item['id'],
+                 'v'                        => $video->id,
 
-                'liveChatId'            => $item['snippet']['liveChatId'],
-                'publishedAt'           => $publishedAt->format('Y-m-d H:i:s'),
-                'message'               => $item['snippet']['displayMessage'],
+                'live_chat_id'              => $item['snippet']['liveChatId'],
+                'published_at'              => $publishedAt->format('Y-m-d H:i:s'),
+                'message'                   => $item['snippet']['displayMessage'],
 
-                'autorChannelId'        => $item['authorDetails']['channelId'],
-                'autorChannelUrl'       => $item['authorDetails']['channelUrl'],
-                'autorDisplayName'      => $item['authorDetails']['displayName'],
-                'autorProfileImageUrl'  => $item['authorDetails']['profileImageUrl'],
+                'autor_channel_id'          => $item['authorDetails']['channelId'],
+                'autor_channel_url'         => $item['authorDetails']['channelUrl'],
+                'autor_display_name'        => $item['authorDetails']['displayName'],
+                'autor_profile_image_url'   => $item['authorDetails']['profileImageUrl'],
             ];
         }, $liveChatMessages['items']);
 
@@ -97,7 +97,7 @@ class LiveChatController extends Controller
             'title' => $video->title,
             'image_url' => $video->image_url,
             'posts' => $posts,
-            'nextPageToken' => $liveChatMessages['nextPageToken'],
+            'next_page_token' => $liveChatMessages['nextPageToken'],
         ];
     }
 }

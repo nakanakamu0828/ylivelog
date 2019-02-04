@@ -101,7 +101,7 @@ export default {
   data: () => ({
     form: {
         id: '',
-        nextPageToken: null
+        next_page_token: null
     },
     alertType: null,
     alertMessage: null,
@@ -144,10 +144,11 @@ export default {
       }
       console.log(response)
       this.video = {
+        id: null,
         title: response.data.title,
         image_url: response.data.image_url
       }
-      this.form.nextPageToken = response.data.nextPageToken
+      this.form.next_page_token = response.data.next_page_token
       this.posts = [...response.data.posts.slice().reverse(), ...this.posts]
 
       this.timerId = setTimeout(this.submit, 5000);
