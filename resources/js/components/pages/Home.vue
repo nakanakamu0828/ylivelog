@@ -142,7 +142,7 @@ export default {
       this.form.next_page_token = response.data.next_page_token
       this.posts = [...response.data.posts.slice().reverse(), ...this.posts]
 
-      this.timerId = setTimeout(this.loadVideo, 5000);
+      this.timerId = setTimeout(this.loadVideo, 10000);
     },
   },
   computed: {

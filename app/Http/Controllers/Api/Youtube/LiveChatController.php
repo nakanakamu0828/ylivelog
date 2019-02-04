@@ -21,40 +21,26 @@ class LiveChatController extends Controller
         $youtube = new \Google_Service_YouTube($client);
 
 
-        $params = [];
-        $params['broadcastStatus'] = 'active';
-        $params['broadcastType'] = 'all';
-        // if (isset($request->id)) {
-        //     $params['id'] = $request->id;
-        // } else {
-        //     $params['broadcastStatus'] = 'active';
-        //     $params['broadcastType'] = 'all';
-        // }
-        $broadcastsResponse = $youtube->liveBroadcasts->listLiveBroadcasts(
-            'id,snippet', $params            
-        );
-
+        $broadcasts = session()->get('broadcasts');
         if (
-            empty($broadcastsResponse['items'])
-            || !isset($broadcastsResponse['items'][0]["id"])
-            || !isset($broadcastsResponse['items'][0]["snippet"]["liveChatId"])
+            isset($broadcasts['live_chat_id'])
+            && isset($broadcasts['expire'])
+            && (Carbon::now())->lte(Carbon::parse($broadcasts['expire']))
         ) {
-            return response()->json([
-                'status' => 404,
-                'message' => 'データが見つかりませんでした',
-            ], 404);
-        }
-
-        $videoId = $broadcastsResponse['items'][0]["id"];
-        $video = Auth::user()->videos()->firstOrNew(['v' => $videoId]);
-        if (!$video->id) {
-            $videoResponse = $youtube->videos->listVideos('snippet', [
-                'id' => $videoId
-            ]);
+            $liveChatId = $broadcasts['live_chat_id'];
+            $video = $broadcasts['video'];
+        } else {
+            $params = [];
+            $params['broadcastStatus'] = 'active';
+            $params['broadcastType'] = 'all';
+            $broadcastsResponse = $youtube->liveBroadcasts->listLiveBroadcasts(
+                'id,snippet', $params            
+            );
     
             if (
-                empty($videoResponse['items'])
-                || !isset($videoResponse['items'][0]["snippet"]["title"])
+                empty($broadcastsResponse['items'])
+                || !isset($broadcastsResponse['items'][0]["id"])
+                || !isset($broadcastsResponse['items'][0]["snippet"]["liveChatId"])
             ) {
                 return response()->json([
                     'status' => 404,
@@ -62,12 +48,38 @@ class LiveChatController extends Controller
                 ], 404);
             }
     
-            $video->title = $videoResponse['items'][0]["snippet"]["title"];
-            $video->image_url = isset($videoResponse['items'][0]["snippet"]["thumbnails"]['standard']['url']) ? $videoResponse['items'][0]["snippet"]["thumbnails"]['standard']['url'] : null;
-            $video->save();
+            $videoId = $broadcastsResponse['items'][0]["id"];
+            $video = Auth::user()->videos()->firstOrNew(['v' => $videoId]);
+            if (!$video->id) {
+                $videoResponse = $youtube->videos->listVideos('snippet', [
+                    'id' => $videoId
+                ]);
+        
+                if (
+                    empty($videoResponse['items'])
+                    || !isset($videoResponse['items'][0]["snippet"]["title"])
+                ) {
+                    return response()->json([
+                        'status' => 404,
+                        'message' => 'データが見つかりませんでした',
+                    ], 404);
+                }
+        
+                $video->title = $videoResponse['items'][0]["snippet"]["title"];
+                $video->image_url = isset($videoResponse['items'][0]["snippet"]["thumbnails"]['standard']['url']) ? $videoResponse['items'][0]["snippet"]["thumbnails"]['standard']['url'] : null;
+                $video->save();
+            }
+
+            $liveChatId = $broadcastsResponse['items'][0]["snippet"]["liveChatId"];
+            $now = Carbon::now();
+            $now->addSecond(600);
+            session()->put('broadcasts', [
+                'live_chat_id' => $liveChatId,
+                'video' => $video,
+                'expire' => $now->format('Y-m-d H:i:s'),
+            ]);
         }
 
-        $liveChatId = $broadcastsResponse['items'][0]["snippet"]["liveChatId"];
 
         $option = [];
         if ($request->next_page_token) {
@@ -85,8 +97,8 @@ class LiveChatController extends Controller
                 'published_at'              => $publishedAt->format('Y-m-d H:i:s'),
                 'message'                   => $item['snippet']['displayMessage'],
 
-                'autor_channel_id'          => $item['authorDetails']['channelId'],
-                'autor_channel_url'         => $item['authorDetails']['channelUrl'],
+                // 'autor_channel_id'          => $item['authorDetails']['channelId'],
+                // 'autor_channel_url'         => $item['authorDetails']['channelUrl'],
                 'autor_display_name'        => $item['authorDetails']['displayName'],
                 'autor_profile_image_url'   => $item['authorDetails']['profileImageUrl'],
             ];

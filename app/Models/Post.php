@@ -17,8 +17,8 @@ class Post extends Eloquent
         'live_chat_id',
         'published_at',
         'message',
-        'autor_channel_id',
-        'autor_channel_url',
+        // 'autor_channel_id',
+        // 'autor_channel_url',
         'autor_display_name',
         'autor_profile_image_url',
     ];

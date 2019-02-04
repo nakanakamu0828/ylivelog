@@ -722,7 +722,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
                 this.form.id = this.video.v;
                 this.form.next_page_token = response.data.next_page_token;
                 this.posts = [].concat(_toConsumableArray(response.data.posts.slice().reverse()), _toConsumableArray(this.posts));
-                this.timerId = setTimeout(this.loadVideo, 5000);
+                this.timerId = setTimeout(this.loadVideo, 10000);
 
               case 14:
               case "end":
