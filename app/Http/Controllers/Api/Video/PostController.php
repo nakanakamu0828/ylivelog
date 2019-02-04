@@ -12,7 +12,7 @@ class PostController extends Controller
     public function index(Request $request, $id)
     {
         $video = Auth::user()->videos()->findOrFail($id);
-        $posts = Post::where('v', $video->id)->orderBy('published_at', 'desc')->paginate(1);
+        $posts = Post::where('v', $video->id)->orderBy('published_at', 'desc')->paginate();
         return [
             'posts' => $posts,
             'next'  => $posts->lastPage() > $posts->currentPage() ? $posts->currentPage() + 1 : null,

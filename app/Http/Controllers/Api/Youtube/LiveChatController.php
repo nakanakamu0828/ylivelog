@@ -22,11 +22,14 @@ class LiveChatController extends Controller
 
 
         $params = [];
-        if (isset($request->id)) {
-            $params['id'] = $request->id;
-        } else {
-            $params['mine'] = 'true';
-        }
+        $params['broadcastStatus'] = 'active';
+        $params['broadcastType'] = 'all';
+        // if (isset($request->id)) {
+        //     $params['id'] = $request->id;
+        // } else {
+        //     $params['broadcastStatus'] = 'active';
+        //     $params['broadcastType'] = 'all';
+        // }
         $broadcastsResponse = $youtube->liveBroadcasts->listLiveBroadcasts(
             'id,snippet', $params            
         );
