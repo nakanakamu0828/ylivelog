@@ -20,15 +20,20 @@ class LiveChatController extends Controller
         $client->setAccessToken(json_encode($google_client_token));
         $youtube = new \Google_Service_YouTube($client);
 
+
+        $params = [];
+        if (isset($request->id)) {
+            $params['id'] = $request->id;
+        } else {
+            $params['mine'] = 'true';
+        }
         $broadcastsResponse = $youtube->liveBroadcasts->listLiveBroadcasts(
-            'id,snippet',
-            [
-                'id' => $request->id,
-            ]
+            'id,snippet', $params            
         );
 
         if (
             empty($broadcastsResponse['items'])
+            || !isset($broadcastsResponse['items'][0]["id"])
             || !isset($broadcastsResponse['items'][0]["snippet"]["liveChatId"])
         ) {
             return response()->json([
@@ -37,12 +42,12 @@ class LiveChatController extends Controller
             ], 404);
         }
 
-
-        $video = Auth::user()->videos()->firstOrNew(['v' => $request->id]);
+        $videoId = $broadcastsResponse['items'][0]["id"];
+        $video = Auth::user()->videos()->firstOrNew(['v' => $videoId]);
         if (!$video->id) {
-            $videoResponse = $youtube->videos->listVideos('snippet', array(
-                'id' => $request->id
-            ));
+            $videoResponse = $youtube->videos->listVideos('snippet', [
+                'id' => $videoId
+            ]);
     
             if (
                 empty($videoResponse['items'])
@@ -94,8 +99,7 @@ class LiveChatController extends Controller
         }
 
         return [
-            'title' => $video->title,
-            'image_url' => $video->image_url,
+            'video' => $video,
             'posts' => $posts,
             'next_page_token' => $liveChatMessages['nextPageToken'],
         ];

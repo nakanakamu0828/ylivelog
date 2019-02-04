@@ -540,8 +540,6 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _components_molecules_cards_video_card__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ~/components/molecules/cards/video-card */ "./resources/js/components/molecules/cards/video-card/index.vue");
 /* harmony import */ var _components_molecules_cards_chat_card__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ~/components/molecules/cards/chat-card */ "./resources/js/components/molecules/cards/chat-card/index.vue");
 /* harmony import */ var _components_templates_app_layout__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ~/components/templates/app-layout */ "./resources/js/components/templates/app-layout/index.vue");
-/* harmony import */ var vuelidate_lib_validators__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! vuelidate/lib/validators */ "./node_modules/vuelidate/lib/validators/index.js");
-/* harmony import */ var vuelidate_lib_validators__WEBPACK_IMPORTED_MODULE_8___default = /*#__PURE__*/__webpack_require__.n(vuelidate_lib_validators__WEBPACK_IMPORTED_MODULE_8__);
 
 
 function _toConsumableArray(arr) { return _arrayWithoutHoles(arr) || _iterableToArray(arr) || _nonIterableSpread(); }
@@ -634,7 +632,13 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 //
 //
 //
-
+//
+//
+//
+//
+//
+//
+//
 
 
 
@@ -674,13 +678,6 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
       timerId: null
     };
   },
-  validations: {
-    form: {
-      id: {
-        required: vuelidate_lib_validators__WEBPACK_IMPORTED_MODULE_8__["required"]
-      }
-    }
-  },
   methods: {
     googleLogin: function googleLogin() {
       location.href = '/oauth/google';
@@ -688,8 +685,8 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
     closeSuccessAlert: function closeSuccessAlert() {
       this.alertMessage = null;
     },
-    submit: function () {
-      var _submit = _asyncToGenerator(
+    loadVideo: function () {
+      var _loadVideo = _asyncToGenerator(
       /*#__PURE__*/
       _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.mark(function _callee() {
         var response;
@@ -697,55 +694,37 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
           while (1) {
             switch (_context.prev = _context.next) {
               case 0:
-                if (this.video) {
-                  _context.next = 5;
-                  break;
+                if (!this.video) {
+                  this.$store.dispatch('setLoading', true);
                 }
 
-                this.$v.$touch();
-
-                if (!this.$v.$invalid) {
-                  _context.next = 4;
-                  break;
-                }
-
-                return _context.abrupt("return");
-
-              case 4:
-                this.$store.dispatch('setLoading', true);
-
-              case 5:
-                _context.next = 7;
+                _context.next = 3;
                 return _plugins_http_js__WEBPACK_IMPORTED_MODULE_1__["default"].post('api/youtube/livechats', this.form);
 
-              case 7:
+              case 3:
                 response = _context.sent;
                 this.$store.dispatch('setLoading', false);
 
                 if (response.ok) {
-                  _context.next = 13;
+                  _context.next = 9;
                   break;
                 }
 
                 this.alertType = 'error';
                 this.alertMessage = {
-                  title: 'Liveチャットデータ取得失敗',
-                  description: 'Youtube Liveのチャットデータ取得に失敗しました。'
+                  title: 'Live配信データ取得失敗',
+                  description: 'YoutubeのLive配信データが取得できませんでした。'
                 };
                 return _context.abrupt("return");
 
-              case 13:
-                console.log(response);
-                this.video = {
-                  id: null,
-                  title: response.data.title,
-                  image_url: response.data.image_url
-                };
+              case 9:
+                this.video = response.data.video;
+                this.form.id = this.video.v;
                 this.form.next_page_token = response.data.next_page_token;
                 this.posts = [].concat(_toConsumableArray(response.data.posts.slice().reverse()), _toConsumableArray(this.posts));
-                this.timerId = setTimeout(this.submit, 5000);
+                this.timerId = setTimeout(this.loadVideo, 5000);
 
-              case 18:
+              case 14:
               case "end":
                 return _context.stop();
             }
@@ -753,11 +732,11 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
         }, _callee, this);
       }));
 
-      function submit() {
-        return _submit.apply(this, arguments);
+      function loadVideo() {
+        return _loadVideo.apply(this, arguments);
       }
 
-      return submit;
+      return loadVideo;
     }()
   },
   computed: {
@@ -767,6 +746,9 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
     user: function user() {
       return this.$store.getters['auth/user'];
     }
+  },
+  created: function created() {
+    this.loadVideo();
   },
   beforeDestroy: function beforeDestroy() {
     if (this.timerId) {
@@ -1254,7 +1236,7 @@ exports = module.exports = __webpack_require__(/*! ../../../../../node_modules/c
 
 
 // module
-exports.push([module.i, "/*! normalize.css v8.0.1 | MIT License | github.com/necolas/normalize.css */\n\n/* Document\n   ========================================================================== */\n\n/**\n * 1. Correct the line height in all browsers.\n * 2. Prevent adjustments of font size after orientation changes in iOS.\n */\nhtml[data-v-0eac0937] {\n  line-height: 1.15; /* 1 */\n  -webkit-text-size-adjust: 100%; /* 2 */\n}\n\n/* Sections\n   ========================================================================== */\n\n/**\n * Remove the margin in all browsers.\n */\nbody[data-v-0eac0937] {\n  margin: 0;\n}\n\n/**\n * Render the `main` element consistently in IE.\n */\nmain[data-v-0eac0937] {\n  display: block;\n}\n\n/**\n * Correct the font size and margin on `h1` elements within `section` and\n * `article` contexts in Chrome, Firefox, and Safari.\n */\nh1[data-v-0eac0937] {\n  font-size: 2em;\n  margin: .67em 0;\n}\n\n/* Grouping content\n   ========================================================================== */\n\n/**\n * 1. Add the correct box sizing in Firefox.\n * 2. Show the overflow in Edge and IE.\n */\nhr[data-v-0eac0937] {\n  box-sizing: content-box; /* 1 */\n  height: 0; /* 1 */\n  overflow: visible; /* 2 */\n}\n\n/**\n * 1. Correct the inheritance and scaling of font size in all browsers.\n * 2. Correct the odd `em` font sizing in all browsers.\n */\npre[data-v-0eac0937] {\n  font-family: monospace, monospace; /* 1 */\n  font-size: 1em; /* 2 */\n}\n\n/* Text-level semantics\n   ========================================================================== */\n\n/**\n * Remove the gray background on active links in IE 10.\n */\na[data-v-0eac0937] {\n  background-color: transparent;\n}\n\n/**\n * 1. Remove the bottom border in Chrome 57-\n * 2. Add the correct text decoration in Chrome, Edge, IE, Opera, and Safari.\n */\nabbr[title][data-v-0eac0937] {\n  border-bottom: none; /* 1 */\n  text-decoration: underline; /* 2 */\n  -webkit-text-decoration: underline dotted;\n          text-decoration: underline dotted; /* 2 */\n}\n\n/**\n * Add the correct font weight in Chrome, Edge, and Safari.\n */\nb[data-v-0eac0937],\nstrong[data-v-0eac0937] {\n  font-weight: bolder;\n}\n\n/**\n * 1. Correct the inheritance and scaling of font size in all browsers.\n * 2. Correct the odd `em` font sizing in all browsers.\n */\ncode[data-v-0eac0937],\nkbd[data-v-0eac0937],\nsamp[data-v-0eac0937] {\n  font-family: monospace, monospace; /* 1 */\n  font-size: 1em; /* 2 */\n}\n\n/**\n * Add the correct font size in all browsers.\n */\nsmall[data-v-0eac0937] {\n  font-size: 80%;\n}\n\n/**\n * Prevent `sub` and `sup` elements from affecting the line height in\n * all browsers.\n */\nsub[data-v-0eac0937],\nsup[data-v-0eac0937] {\n  font-size: 75%;\n  line-height: 0;\n  position: relative;\n  vertical-align: baseline;\n}\nsub[data-v-0eac0937] {\n  bottom: -0.25em;\n}\nsup[data-v-0eac0937] {\n  top: -0.5em;\n}\n\n/* Embedded content\n   ========================================================================== */\n\n/**\n * Remove the border on images inside links in IE 10.\n */\nimg[data-v-0eac0937] {\n  border-style: none;\n}\n\n/* Forms\n   ========================================================================== */\n\n/**\n * 1. Change the font styles in all browsers.\n * 2. Remove the margin in Firefox and Safari.\n */\nbutton[data-v-0eac0937],\ninput[data-v-0eac0937],\noptgroup[data-v-0eac0937],\nselect[data-v-0eac0937],\ntextarea[data-v-0eac0937] {\n  font-family: inherit; /* 1 */\n  font-size: 100%; /* 1 */\n  line-height: 1.15; /* 1 */\n  margin: 0; /* 2 */\n}\n\n/**\n * Show the overflow in IE.\n * 1. Show the overflow in Edge.\n */\nbutton[data-v-0eac0937],\ninput[data-v-0eac0937] {\n  /* 1 */\n  overflow: visible;\n}\n\n/**\n * Remove the inheritance of text transform in Edge, Firefox, and IE.\n * 1. Remove the inheritance of text transform in Firefox.\n */\nbutton[data-v-0eac0937],\nselect[data-v-0eac0937] {\n  /* 1 */\n  text-transform: none;\n}\n\n/**\n * Correct the inability to style clickable types in iOS and Safari.\n */\nbutton[data-v-0eac0937],\n[type=\"button\"][data-v-0eac0937],\n[type=\"reset\"][data-v-0eac0937],\n[type=\"submit\"][data-v-0eac0937] {\n  -webkit-appearance: button;\n}\n\n/**\n * Remove the inner border and padding in Firefox.\n */\nbutton[data-v-0eac0937]::-moz-focus-inner,\n[type=\"button\"][data-v-0eac0937]::-moz-focus-inner,\n[type=\"reset\"][data-v-0eac0937]::-moz-focus-inner,\n[type=\"submit\"][data-v-0eac0937]::-moz-focus-inner {\n  border-style: none;\n  padding: 0;\n}\n\n/**\n * Restore the focus styles unset by the previous rule.\n */\nbutton[data-v-0eac0937]:-moz-focusring,\n[type=\"button\"][data-v-0eac0937]:-moz-focusring,\n[type=\"reset\"][data-v-0eac0937]:-moz-focusring,\n[type=\"submit\"][data-v-0eac0937]:-moz-focusring {\n  outline: 1px dotted ButtonText;\n}\n\n/**\n * Correct the padding in Firefox.\n */\nfieldset[data-v-0eac0937] {\n  padding: .35em .75em .625em;\n}\n\n/**\n * 1. Correct the text wrapping in Edge and IE.\n * 2. Correct the color inheritance from `fieldset` elements in IE.\n * 3. Remove the padding so developers are not caught out when they zero out\n *    `fieldset` elements in all browsers.\n */\nlegend[data-v-0eac0937] {\n  box-sizing: border-box; /* 1 */\n  color: inherit; /* 2 */\n  display: table; /* 1 */\n  max-width: 100%; /* 1 */\n  padding: 0; /* 3 */\n  white-space: normal; /* 1 */\n}\n\n/**\n * Add the correct vertical alignment in Chrome, Firefox, and Opera.\n */\nprogress[data-v-0eac0937] {\n  vertical-align: baseline;\n}\n\n/**\n * Remove the default vertical scrollbar in IE 10+.\n */\ntextarea[data-v-0eac0937] {\n  overflow: auto;\n}\n\n/**\n * 1. Add the correct box sizing in IE 10.\n * 2. Remove the padding in IE 10.\n */\n[type=\"checkbox\"][data-v-0eac0937],\n[type=\"radio\"][data-v-0eac0937] {\n  box-sizing: border-box; /* 1 */\n  padding: 0; /* 2 */\n}\n\n/**\n * Correct the cursor style of increment and decrement buttons in Chrome.\n */\n[type=\"number\"][data-v-0eac0937]::-webkit-inner-spin-button,\n[type=\"number\"][data-v-0eac0937]::-webkit-outer-spin-button {\n  height: auto;\n}\n\n/**\n * 1. Correct the odd appearance in Chrome and Safari.\n * 2. Correct the outline style in Safari.\n */\n[type=\"search\"][data-v-0eac0937] {\n  -webkit-appearance: textfield; /* 1 */\n  outline-offset: -2px; /* 2 */\n}\n\n/**\n * Remove the inner padding in Chrome and Safari on macOS.\n */\n[type=\"search\"][data-v-0eac0937]::-webkit-search-decoration {\n  -webkit-appearance: none;\n}\n\n/**\n * 1. Correct the inability to style clickable types in iOS and Safari.\n * 2. Change font properties to `inherit` in Safari.\n */\n[data-v-0eac0937]::-webkit-file-upload-button {\n  -webkit-appearance: button; /* 1 */\n  font: inherit; /* 2 */\n}\n\n/* Interactive\n   ========================================================================== */\n\n/*\n * Add the correct display in Edge, IE 10+, and Firefox.\n */\ndetails[data-v-0eac0937] {\n  display: block;\n}\n\n/*\n * Add the correct display in all browsers.\n */\nsummary[data-v-0eac0937] {\n  display: list-item;\n}\n\n/* Misc\n   ========================================================================== */\n\n/**\n * Add the correct display in IE 10+.\n */\ntemplate[data-v-0eac0937] {\n  display: none;\n}\n\n/**\n * Add the correct display in IE 10.\n */\n[hidden][data-v-0eac0937] {\n  display: none;\n}\n\n/**\n * Manually forked from SUIT CSS Base: https://github.com/suitcss/base\n * A thin layer on top of normalize.css that provides a starting point more\n * suitable for web applications.\n */\n\n/**\n * 1. Prevent padding and border from affecting element width\n * https://goo.gl/pYtbK7\n * 2. Change the default font family in all browsers (opinionated)\n */\nhtml[data-v-0eac0937] {\n  box-sizing: border-box; /* 1 */\n  font-family: sans-serif; /* 2 */\n}\n*[data-v-0eac0937],\n*[data-v-0eac0937]::before,\n*[data-v-0eac0937]::after {\n  box-sizing: inherit;\n}\n\n/**\n * Removes the default spacing and border for appropriate elements.\n */\nblockquote[data-v-0eac0937],\ndl[data-v-0eac0937],\ndd[data-v-0eac0937],\nh1[data-v-0eac0937],\nh2[data-v-0eac0937],\nh3[data-v-0eac0937],\nh4[data-v-0eac0937],\nh5[data-v-0eac0937],\nh6[data-v-0eac0937],\nfigure[data-v-0eac0937],\np[data-v-0eac0937],\npre[data-v-0eac0937] {\n  margin: 0;\n}\nbutton[data-v-0eac0937] {\n  background: transparent;\n  padding: 0;\n}\n\n/**\n * Work around a Firefox/IE bug where the transparent `button` background\n * results in a loss of the default `button` focus styles.\n */\nbutton[data-v-0eac0937]:focus {\n  outline: 1px dotted;\n  outline: 5px auto -webkit-focus-ring-color;\n}\nfieldset[data-v-0eac0937] {\n  margin: 0;\n  padding: 0;\n}\nol[data-v-0eac0937],\nul[data-v-0eac0937] {\n  margin: 0;\n}\n\n/**\n * Tailwind custom reset styles\n */\n\n/**\n * Allow adding a border to an element by just adding a border-width.\n *\n * By default, the way the browser specifies that an element should have no\n * border is by setting it's border-style to `none` in the user-agent\n * stylesheet.\n *\n * In order to easily add borders to elements by just setting the `border-width`\n * property, we change the default border-style for all elements to `solid`, and\n * use border-width to hide them instead. This way our `border` utilities only\n * need to set the `border-width` property instead of the entire `border`\n * shorthand, making our border utilities much more straightforward to compose.\n *\n * https://github.com/tailwindcss/tailwindcss/pull/116\n */\n*[data-v-0eac0937],\n*[data-v-0eac0937]::before,\n*[data-v-0eac0937]::after {\n  border-width: 0;\n  border-style: solid;\n  border-color: #dae1e7;\n}\n\n/**\n * Undo the `border-style: none` reset that Normalize applies to images so that\n * our `border-{width}` utilities have the expected effect.\n *\n * The Normalize reset is unnecessary for us since we default the border-width\n * to 0 on all elements.\n *\n * https://github.com/tailwindcss/tailwindcss/issues/362\n */\nimg[data-v-0eac0937] {\n  border-style: solid;\n}\ntextarea[data-v-0eac0937] {\n  resize: vertical;\n}\nimg[data-v-0eac0937] {\n  max-width: 100%;\n  height: auto;\n}\ninput[data-v-0eac0937]::-webkit-input-placeholder,\ntextarea[data-v-0eac0937]::-webkit-input-placeholder {\n  color: inherit;\n  opacity: .5;\n}\ninput[data-v-0eac0937]:-ms-input-placeholder,\ntextarea[data-v-0eac0937]:-ms-input-placeholder {\n  color: inherit;\n  opacity: .5;\n}\ninput[data-v-0eac0937]::-ms-input-placeholder,\ntextarea[data-v-0eac0937]::-ms-input-placeholder {\n  color: inherit;\n  opacity: .5;\n}\ninput[data-v-0eac0937]::placeholder,\ntextarea[data-v-0eac0937]::placeholder {\n  color: inherit;\n  opacity: .5;\n}\nbutton[data-v-0eac0937],\n[role=\"button\"][data-v-0eac0937] {\n  cursor: pointer;\n}\ntable[data-v-0eac0937] {\n  border-collapse: collapse;\n}\n.loader-bg[data-v-0eac0937] {\n  background-color: #22292f;\n  position: fixed;\n  width: 100%;\n  height: 100%;\n  top: 0;\n  left: 0;\n  z-index: 1;\n  opacity: .5;\n}\n.loader[data-v-0eac0937] {\n  top: 50%;\n  left: 50%;\n  font-size: 25px;\n  width: 1em;\n  height: 1em;\n  border-radius: 50%;\n  position: relative;\n  text-indent: -9999em;\n  -webkit-animation: load5-data-v-0eac0937 1.1s infinite ease;\n          animation: load5-data-v-0eac0937 1.1s infinite ease;\n  -webkit-transform: translateZ(0);\n          transform: translateZ(0);\n}\n@-webkit-keyframes load5-data-v-0eac0937 {\n0%,\n  100% {\n    box-shadow: 0em -2.6em 0em 0em #fff, 1.8em -1.8em 0 0em rgba(255, 255, 255, .2), 2.5em 0em 0 0em rgba(255, 255, 255, .2), 1.75em 1.75em 0 0em rgba(255, 255, 255, .2), 0em 2.5em 0 0em rgba(255, 255, 255, .2), -1.8em 1.8em 0 0em rgba(255, 255, 255, .2), -2.6em 0em 0 0em rgba(255, 255, 255, .5), -1.8em -1.8em 0 0em rgba(255, 255, 255, .7);\n}\n12.5% {\n    box-shadow: 0em -2.6em 0em 0em rgba(255, 255, 255, .7), 1.8em -1.8em 0 0em #fff, 2.5em 0em 0 0em rgba(255, 255, 255, .2), 1.75em 1.75em 0 0em rgba(255, 255, 255, .2), 0em 2.5em 0 0em rgba(255, 255, 255, .2), -1.8em 1.8em 0 0em rgba(255, 255, 255, .2), -2.6em 0em 0 0em rgba(255, 255, 255, .2), -1.8em -1.8em 0 0em rgba(255, 255, 255, .5);\n}\n25% {\n    box-shadow: 0em -2.6em 0em 0em rgba(255, 255, 255, .5), 1.8em -1.8em 0 0em rgba(255, 255, 255, .7), 2.5em 0em 0 0em #fff, 1.75em 1.75em 0 0em rgba(255, 255, 255, .2), 0em 2.5em 0 0em rgba(255, 255, 255, .2), -1.8em 1.8em 0 0em rgba(255, 255, 255, .2), -2.6em 0em 0 0em rgba(255, 255, 255, .2), -1.8em -1.8em 0 0em rgba(255, 255, 255, .2);\n}\n37.5% {\n    box-shadow: 0em -2.6em 0em 0em rgba(255, 255, 255, .2), 1.8em -1.8em 0 0em rgba(255, 255, 255, .5), 2.5em 0em 0 0em rgba(255, 255, 255, .7), 1.75em 1.75em 0 0em #fff, 0em 2.5em 0 0em rgba(255, 255, 255, .2), -1.8em 1.8em 0 0em rgba(255, 255, 255, .2), -2.6em 0em 0 0em rgba(255, 255, 255, .2), -1.8em -1.8em 0 0em rgba(255, 255, 255, .2);\n}\n50% {\n    box-shadow: 0em -2.6em 0em 0em rgba(255, 255, 255, .2), 1.8em -1.8em 0 0em rgba(255, 255, 255, .2), 2.5em 0em 0 0em rgba(255, 255, 255, .5), 1.75em 1.75em 0 0em rgba(255, 255, 255, .7), 0em 2.5em 0 0em #fff, -1.8em 1.8em 0 0em rgba(255, 255, 255, .2), -2.6em 0em 0 0em rgba(255, 255, 255, .2), -1.8em -1.8em 0 0em rgba(255, 255, 255, .2);\n}\n62.5% {\n    box-shadow: 0em -2.6em 0em 0em rgba(255, 255, 255, .2), 1.8em -1.8em 0 0em rgba(255, 255, 255, .2), 2.5em 0em 0 0em rgba(255, 255, 255, .2), 1.75em 1.75em 0 0em rgba(255, 255, 255, .5), 0em 2.5em 0 0em rgba(255, 255, 255, .7), -1.8em 1.8em 0 0em #fff, -2.6em 0em 0 0em rgba(255, 255, 255, .2), -1.8em -1.8em 0 0em rgba(255, 255, 255, .2);\n}\n75% {\n    box-shadow: 0em -2.6em 0em 0em rgba(255, 255, 255, .2), 1.8em -1.8em 0 0em rgba(255, 255, 255, .2), 2.5em 0em 0 0em rgba(255, 255, 255, .2), 1.75em 1.75em 0 0em rgba(255, 255, 255, .2), 0em 2.5em 0 0em rgba(255, 255, 255, .5), -1.8em 1.8em 0 0em rgba(255, 255, 255, .7), -2.6em 0em 0 0em #fff, -1.8em -1.8em 0 0em rgba(255, 255, 255, .2);\n}\n87.5% {\n    box-shadow: 0em -2.6em 0em 0em rgba(255, 255, 255, .2), 1.8em -1.8em 0 0em rgba(255, 255, 255, .2), 2.5em 0em 0 0em rgba(255, 255, 255, .2), 1.75em 1.75em 0 0em rgba(255, 255, 255, .2), 0em 2.5em 0 0em rgba(255, 255, 255, .2), -1.8em 1.8em 0 0em rgba(255, 255, 255, .5), -2.6em 0em 0 0em rgba(255, 255, 255, .7), -1.8em -1.8em 0 0em #fff;\n}\n}\n@keyframes load5-data-v-0eac0937 {\n0%,\n  100% {\n    box-shadow: 0em -2.6em 0em 0em #fff, 1.8em -1.8em 0 0em rgba(255, 255, 255, .2), 2.5em 0em 0 0em rgba(255, 255, 255, .2), 1.75em 1.75em 0 0em rgba(255, 255, 255, .2), 0em 2.5em 0 0em rgba(255, 255, 255, .2), -1.8em 1.8em 0 0em rgba(255, 255, 255, .2), -2.6em 0em 0 0em rgba(255, 255, 255, .5), -1.8em -1.8em 0 0em rgba(255, 255, 255, .7);\n}\n12.5% {\n    box-shadow: 0em -2.6em 0em 0em rgba(255, 255, 255, .7), 1.8em -1.8em 0 0em #fff, 2.5em 0em 0 0em rgba(255, 255, 255, .2), 1.75em 1.75em 0 0em rgba(255, 255, 255, .2), 0em 2.5em 0 0em rgba(255, 255, 255, .2), -1.8em 1.8em 0 0em rgba(255, 255, 255, .2), -2.6em 0em 0 0em rgba(255, 255, 255, .2), -1.8em -1.8em 0 0em rgba(255, 255, 255, .5);\n}\n25% {\n    box-shadow: 0em -2.6em 0em 0em rgba(255, 255, 255, .5), 1.8em -1.8em 0 0em rgba(255, 255, 255, .7), 2.5em 0em 0 0em #fff, 1.75em 1.75em 0 0em rgba(255, 255, 255, .2), 0em 2.5em 0 0em rgba(255, 255, 255, .2), -1.8em 1.8em 0 0em rgba(255, 255, 255, .2), -2.6em 0em 0 0em rgba(255, 255, 255, .2), -1.8em -1.8em 0 0em rgba(255, 255, 255, .2);\n}\n37.5% {\n    box-shadow: 0em -2.6em 0em 0em rgba(255, 255, 255, .2), 1.8em -1.8em 0 0em rgba(255, 255, 255, .5), 2.5em 0em 0 0em rgba(255, 255, 255, .7), 1.75em 1.75em 0 0em #fff, 0em 2.5em 0 0em rgba(255, 255, 255, .2), -1.8em 1.8em 0 0em rgba(255, 255, 255, .2), -2.6em 0em 0 0em rgba(255, 255, 255, .2), -1.8em -1.8em 0 0em rgba(255, 255, 255, .2);\n}\n50% {\n    box-shadow: 0em -2.6em 0em 0em rgba(255, 255, 255, .2), 1.8em -1.8em 0 0em rgba(255, 255, 255, .2), 2.5em 0em 0 0em rgba(255, 255, 255, .5), 1.75em 1.75em 0 0em rgba(255, 255, 255, .7), 0em 2.5em 0 0em #fff, -1.8em 1.8em 0 0em rgba(255, 255, 255, .2), -2.6em 0em 0 0em rgba(255, 255, 255, .2), -1.8em -1.8em 0 0em rgba(255, 255, 255, .2);\n}\n62.5% {\n    box-shadow: 0em -2.6em 0em 0em rgba(255, 255, 255, .2), 1.8em -1.8em 0 0em rgba(255, 255, 255, .2), 2.5em 0em 0 0em rgba(255, 255, 255, .2), 1.75em 1.75em 0 0em rgba(255, 255, 255, .5), 0em 2.5em 0 0em rgba(255, 255, 255, .7), -1.8em 1.8em 0 0em #fff, -2.6em 0em 0 0em rgba(255, 255, 255, .2), -1.8em -1.8em 0 0em rgba(255, 255, 255, .2);\n}\n75% {\n    box-shadow: 0em -2.6em 0em 0em rgba(255, 255, 255, .2), 1.8em -1.8em 0 0em rgba(255, 255, 255, .2), 2.5em 0em 0 0em rgba(255, 255, 255, .2), 1.75em 1.75em 0 0em rgba(255, 255, 255, .2), 0em 2.5em 0 0em rgba(255, 255, 255, .5), -1.8em 1.8em 0 0em rgba(255, 255, 255, .7), -2.6em 0em 0 0em #fff, -1.8em -1.8em 0 0em rgba(255, 255, 255, .2);\n}\n87.5% {\n    box-shadow: 0em -2.6em 0em 0em rgba(255, 255, 255, .2), 1.8em -1.8em 0 0em rgba(255, 255, 255, .2), 2.5em 0em 0 0em rgba(255, 255, 255, .2), 1.75em 1.75em 0 0em rgba(255, 255, 255, .2), 0em 2.5em 0 0em rgba(255, 255, 255, .2), -1.8em 1.8em 0 0em rgba(255, 255, 255, .5), -2.6em 0em 0 0em rgba(255, 255, 255, .7), -1.8em -1.8em 0 0em #fff;\n}\n}\n", ""]);
+exports.push([module.i, "/*! normalize.css v8.0.1 | MIT License | github.com/necolas/normalize.css */\n\n/* Document\n   ========================================================================== */\n\n/**\n * 1. Correct the line height in all browsers.\n * 2. Prevent adjustments of font size after orientation changes in iOS.\n */\nhtml[data-v-0eac0937] {\n  line-height: 1.15; /* 1 */\n  -webkit-text-size-adjust: 100%; /* 2 */\n}\n\n/* Sections\n   ========================================================================== */\n\n/**\n * Remove the margin in all browsers.\n */\nbody[data-v-0eac0937] {\n  margin: 0;\n}\n\n/**\n * Render the `main` element consistently in IE.\n */\nmain[data-v-0eac0937] {\n  display: block;\n}\n\n/**\n * Correct the font size and margin on `h1` elements within `section` and\n * `article` contexts in Chrome, Firefox, and Safari.\n */\nh1[data-v-0eac0937] {\n  font-size: 2em;\n  margin: .67em 0;\n}\n\n/* Grouping content\n   ========================================================================== */\n\n/**\n * 1. Add the correct box sizing in Firefox.\n * 2. Show the overflow in Edge and IE.\n */\nhr[data-v-0eac0937] {\n  box-sizing: content-box; /* 1 */\n  height: 0; /* 1 */\n  overflow: visible; /* 2 */\n}\n\n/**\n * 1. Correct the inheritance and scaling of font size in all browsers.\n * 2. Correct the odd `em` font sizing in all browsers.\n */\npre[data-v-0eac0937] {\n  font-family: monospace, monospace; /* 1 */\n  font-size: 1em; /* 2 */\n}\n\n/* Text-level semantics\n   ========================================================================== */\n\n/**\n * Remove the gray background on active links in IE 10.\n */\na[data-v-0eac0937] {\n  background-color: transparent;\n}\n\n/**\n * 1. Remove the bottom border in Chrome 57-\n * 2. Add the correct text decoration in Chrome, Edge, IE, Opera, and Safari.\n */\nabbr[title][data-v-0eac0937] {\n  border-bottom: none; /* 1 */\n  text-decoration: underline; /* 2 */\n  -webkit-text-decoration: underline dotted;\n          text-decoration: underline dotted; /* 2 */\n}\n\n/**\n * Add the correct font weight in Chrome, Edge, and Safari.\n */\nb[data-v-0eac0937],\nstrong[data-v-0eac0937] {\n  font-weight: bolder;\n}\n\n/**\n * 1. Correct the inheritance and scaling of font size in all browsers.\n * 2. Correct the odd `em` font sizing in all browsers.\n */\ncode[data-v-0eac0937],\nkbd[data-v-0eac0937],\nsamp[data-v-0eac0937] {\n  font-family: monospace, monospace; /* 1 */\n  font-size: 1em; /* 2 */\n}\n\n/**\n * Add the correct font size in all browsers.\n */\nsmall[data-v-0eac0937] {\n  font-size: 80%;\n}\n\n/**\n * Prevent `sub` and `sup` elements from affecting the line height in\n * all browsers.\n */\nsub[data-v-0eac0937],\nsup[data-v-0eac0937] {\n  font-size: 75%;\n  line-height: 0;\n  position: relative;\n  vertical-align: baseline;\n}\nsub[data-v-0eac0937] {\n  bottom: -0.25em;\n}\nsup[data-v-0eac0937] {\n  top: -0.5em;\n}\n\n/* Embedded content\n   ========================================================================== */\n\n/**\n * Remove the border on images inside links in IE 10.\n */\nimg[data-v-0eac0937] {\n  border-style: none;\n}\n\n/* Forms\n   ========================================================================== */\n\n/**\n * 1. Change the font styles in all browsers.\n * 2. Remove the margin in Firefox and Safari.\n */\nbutton[data-v-0eac0937],\ninput[data-v-0eac0937],\noptgroup[data-v-0eac0937],\nselect[data-v-0eac0937],\ntextarea[data-v-0eac0937] {\n  font-family: inherit; /* 1 */\n  font-size: 100%; /* 1 */\n  line-height: 1.15; /* 1 */\n  margin: 0; /* 2 */\n}\n\n/**\n * Show the overflow in IE.\n * 1. Show the overflow in Edge.\n */\nbutton[data-v-0eac0937],\ninput[data-v-0eac0937] {\n  /* 1 */\n  overflow: visible;\n}\n\n/**\n * Remove the inheritance of text transform in Edge, Firefox, and IE.\n * 1. Remove the inheritance of text transform in Firefox.\n */\nbutton[data-v-0eac0937],\nselect[data-v-0eac0937] {\n  /* 1 */\n  text-transform: none;\n}\n\n/**\n * Correct the inability to style clickable types in iOS and Safari.\n */\nbutton[data-v-0eac0937],\n[type=\"button\"][data-v-0eac0937],\n[type=\"reset\"][data-v-0eac0937],\n[type=\"submit\"][data-v-0eac0937] {\n  -webkit-appearance: button;\n}\n\n/**\n * Remove the inner border and padding in Firefox.\n */\nbutton[data-v-0eac0937]::-moz-focus-inner,\n[type=\"button\"][data-v-0eac0937]::-moz-focus-inner,\n[type=\"reset\"][data-v-0eac0937]::-moz-focus-inner,\n[type=\"submit\"][data-v-0eac0937]::-moz-focus-inner {\n  border-style: none;\n  padding: 0;\n}\n\n/**\n * Restore the focus styles unset by the previous rule.\n */\nbutton[data-v-0eac0937]:-moz-focusring,\n[type=\"button\"][data-v-0eac0937]:-moz-focusring,\n[type=\"reset\"][data-v-0eac0937]:-moz-focusring,\n[type=\"submit\"][data-v-0eac0937]:-moz-focusring {\n  outline: 1px dotted ButtonText;\n}\n\n/**\n * Correct the padding in Firefox.\n */\nfieldset[data-v-0eac0937] {\n  padding: .35em .75em .625em;\n}\n\n/**\n * 1. Correct the text wrapping in Edge and IE.\n * 2. Correct the color inheritance from `fieldset` elements in IE.\n * 3. Remove the padding so developers are not caught out when they zero out\n *    `fieldset` elements in all browsers.\n */\nlegend[data-v-0eac0937] {\n  box-sizing: border-box; /* 1 */\n  color: inherit; /* 2 */\n  display: table; /* 1 */\n  max-width: 100%; /* 1 */\n  padding: 0; /* 3 */\n  white-space: normal; /* 1 */\n}\n\n/**\n * Add the correct vertical alignment in Chrome, Firefox, and Opera.\n */\nprogress[data-v-0eac0937] {\n  vertical-align: baseline;\n}\n\n/**\n * Remove the default vertical scrollbar in IE 10+.\n */\ntextarea[data-v-0eac0937] {\n  overflow: auto;\n}\n\n/**\n * 1. Add the correct box sizing in IE 10.\n * 2. Remove the padding in IE 10.\n */\n[type=\"checkbox\"][data-v-0eac0937],\n[type=\"radio\"][data-v-0eac0937] {\n  box-sizing: border-box; /* 1 */\n  padding: 0; /* 2 */\n}\n\n/**\n * Correct the cursor style of increment and decrement buttons in Chrome.\n */\n[type=\"number\"][data-v-0eac0937]::-webkit-inner-spin-button,\n[type=\"number\"][data-v-0eac0937]::-webkit-outer-spin-button {\n  height: auto;\n}\n\n/**\n * 1. Correct the odd appearance in Chrome and Safari.\n * 2. Correct the outline style in Safari.\n */\n[type=\"search\"][data-v-0eac0937] {\n  -webkit-appearance: textfield; /* 1 */\n  outline-offset: -2px; /* 2 */\n}\n\n/**\n * Remove the inner padding in Chrome and Safari on macOS.\n */\n[type=\"search\"][data-v-0eac0937]::-webkit-search-decoration {\n  -webkit-appearance: none;\n}\n\n/**\n * 1. Correct the inability to style clickable types in iOS and Safari.\n * 2. Change font properties to `inherit` in Safari.\n */\n[data-v-0eac0937]::-webkit-file-upload-button {\n  -webkit-appearance: button; /* 1 */\n  font: inherit; /* 2 */\n}\n\n/* Interactive\n   ========================================================================== */\n\n/*\n * Add the correct display in Edge, IE 10+, and Firefox.\n */\ndetails[data-v-0eac0937] {\n  display: block;\n}\n\n/*\n * Add the correct display in all browsers.\n */\nsummary[data-v-0eac0937] {\n  display: list-item;\n}\n\n/* Misc\n   ========================================================================== */\n\n/**\n * Add the correct display in IE 10+.\n */\ntemplate[data-v-0eac0937] {\n  display: none;\n}\n\n/**\n * Add the correct display in IE 10.\n */\n[hidden][data-v-0eac0937] {\n  display: none;\n}\n\n/**\n * Manually forked from SUIT CSS Base: https://github.com/suitcss/base\n * A thin layer on top of normalize.css that provides a starting point more\n * suitable for web applications.\n */\n\n/**\n * 1. Prevent padding and border from affecting element width\n * https://goo.gl/pYtbK7\n * 2. Change the default font family in all browsers (opinionated)\n */\nhtml[data-v-0eac0937] {\n  box-sizing: border-box; /* 1 */\n  font-family: sans-serif; /* 2 */\n}\n*[data-v-0eac0937],\n*[data-v-0eac0937]::before,\n*[data-v-0eac0937]::after {\n  box-sizing: inherit;\n}\n\n/**\n * Removes the default spacing and border for appropriate elements.\n */\nblockquote[data-v-0eac0937],\ndl[data-v-0eac0937],\ndd[data-v-0eac0937],\nh1[data-v-0eac0937],\nh2[data-v-0eac0937],\nh3[data-v-0eac0937],\nh4[data-v-0eac0937],\nh5[data-v-0eac0937],\nh6[data-v-0eac0937],\nfigure[data-v-0eac0937],\np[data-v-0eac0937],\npre[data-v-0eac0937] {\n  margin: 0;\n}\nbutton[data-v-0eac0937] {\n  background: transparent;\n  padding: 0;\n}\n\n/**\n * Work around a Firefox/IE bug where the transparent `button` background\n * results in a loss of the default `button` focus styles.\n */\nbutton[data-v-0eac0937]:focus {\n  outline: 1px dotted;\n  outline: 5px auto -webkit-focus-ring-color;\n}\nfieldset[data-v-0eac0937] {\n  margin: 0;\n  padding: 0;\n}\nol[data-v-0eac0937],\nul[data-v-0eac0937] {\n  margin: 0;\n}\n\n/**\n * Tailwind custom reset styles\n */\n\n/**\n * Allow adding a border to an element by just adding a border-width.\n *\n * By default, the way the browser specifies that an element should have no\n * border is by setting it's border-style to `none` in the user-agent\n * stylesheet.\n *\n * In order to easily add borders to elements by just setting the `border-width`\n * property, we change the default border-style for all elements to `solid`, and\n * use border-width to hide them instead. This way our `border` utilities only\n * need to set the `border-width` property instead of the entire `border`\n * shorthand, making our border utilities much more straightforward to compose.\n *\n * https://github.com/tailwindcss/tailwindcss/pull/116\n */\n*[data-v-0eac0937],\n*[data-v-0eac0937]::before,\n*[data-v-0eac0937]::after {\n  border-width: 0;\n  border-style: solid;\n  border-color: #dae1e7;\n}\n\n/**\n * Undo the `border-style: none` reset that Normalize applies to images so that\n * our `border-{width}` utilities have the expected effect.\n *\n * The Normalize reset is unnecessary for us since we default the border-width\n * to 0 on all elements.\n *\n * https://github.com/tailwindcss/tailwindcss/issues/362\n */\nimg[data-v-0eac0937] {\n  border-style: solid;\n}\ntextarea[data-v-0eac0937] {\n  resize: vertical;\n}\nimg[data-v-0eac0937] {\n  max-width: 100%;\n  height: auto;\n}\ninput[data-v-0eac0937]::-webkit-input-placeholder,\ntextarea[data-v-0eac0937]::-webkit-input-placeholder {\n  color: inherit;\n  opacity: .5;\n}\ninput[data-v-0eac0937]:-ms-input-placeholder,\ntextarea[data-v-0eac0937]:-ms-input-placeholder {\n  color: inherit;\n  opacity: .5;\n}\ninput[data-v-0eac0937]::-ms-input-placeholder,\ntextarea[data-v-0eac0937]::-ms-input-placeholder {\n  color: inherit;\n  opacity: .5;\n}\ninput[data-v-0eac0937]::placeholder,\ntextarea[data-v-0eac0937]::placeholder {\n  color: inherit;\n  opacity: .5;\n}\nbutton[data-v-0eac0937],\n[role=\"button\"][data-v-0eac0937] {\n  cursor: pointer;\n}\ntable[data-v-0eac0937] {\n  border-collapse: collapse;\n}\n.loader-bg[data-v-0eac0937] {\n  background-color: #22292f;\n  position: fixed;\n  width: 100%;\n  height: 100%;\n  top: 0;\n  left: 0;\n  opacity: .5;\n}\n.loader[data-v-0eac0937] {\n  top: 50%;\n  left: 50%;\n  font-size: 25px;\n  width: 1em;\n  height: 1em;\n  border-radius: 50%;\n  position: relative;\n  text-indent: -9999em;\n  -webkit-animation: load5-data-v-0eac0937 1.1s infinite ease;\n          animation: load5-data-v-0eac0937 1.1s infinite ease;\n  -webkit-transform: translateZ(0);\n          transform: translateZ(0);\n}\n@-webkit-keyframes load5-data-v-0eac0937 {\n0%,\n  100% {\n    box-shadow: 0em -2.6em 0em 0em #fff, 1.8em -1.8em 0 0em rgba(255, 255, 255, .2), 2.5em 0em 0 0em rgba(255, 255, 255, .2), 1.75em 1.75em 0 0em rgba(255, 255, 255, .2), 0em 2.5em 0 0em rgba(255, 255, 255, .2), -1.8em 1.8em 0 0em rgba(255, 255, 255, .2), -2.6em 0em 0 0em rgba(255, 255, 255, .5), -1.8em -1.8em 0 0em rgba(255, 255, 255, .7);\n}\n12.5% {\n    box-shadow: 0em -2.6em 0em 0em rgba(255, 255, 255, .7), 1.8em -1.8em 0 0em #fff, 2.5em 0em 0 0em rgba(255, 255, 255, .2), 1.75em 1.75em 0 0em rgba(255, 255, 255, .2), 0em 2.5em 0 0em rgba(255, 255, 255, .2), -1.8em 1.8em 0 0em rgba(255, 255, 255, .2), -2.6em 0em 0 0em rgba(255, 255, 255, .2), -1.8em -1.8em 0 0em rgba(255, 255, 255, .5);\n}\n25% {\n    box-shadow: 0em -2.6em 0em 0em rgba(255, 255, 255, .5), 1.8em -1.8em 0 0em rgba(255, 255, 255, .7), 2.5em 0em 0 0em #fff, 1.75em 1.75em 0 0em rgba(255, 255, 255, .2), 0em 2.5em 0 0em rgba(255, 255, 255, .2), -1.8em 1.8em 0 0em rgba(255, 255, 255, .2), -2.6em 0em 0 0em rgba(255, 255, 255, .2), -1.8em -1.8em 0 0em rgba(255, 255, 255, .2);\n}\n37.5% {\n    box-shadow: 0em -2.6em 0em 0em rgba(255, 255, 255, .2), 1.8em -1.8em 0 0em rgba(255, 255, 255, .5), 2.5em 0em 0 0em rgba(255, 255, 255, .7), 1.75em 1.75em 0 0em #fff, 0em 2.5em 0 0em rgba(255, 255, 255, .2), -1.8em 1.8em 0 0em rgba(255, 255, 255, .2), -2.6em 0em 0 0em rgba(255, 255, 255, .2), -1.8em -1.8em 0 0em rgba(255, 255, 255, .2);\n}\n50% {\n    box-shadow: 0em -2.6em 0em 0em rgba(255, 255, 255, .2), 1.8em -1.8em 0 0em rgba(255, 255, 255, .2), 2.5em 0em 0 0em rgba(255, 255, 255, .5), 1.75em 1.75em 0 0em rgba(255, 255, 255, .7), 0em 2.5em 0 0em #fff, -1.8em 1.8em 0 0em rgba(255, 255, 255, .2), -2.6em 0em 0 0em rgba(255, 255, 255, .2), -1.8em -1.8em 0 0em rgba(255, 255, 255, .2);\n}\n62.5% {\n    box-shadow: 0em -2.6em 0em 0em rgba(255, 255, 255, .2), 1.8em -1.8em 0 0em rgba(255, 255, 255, .2), 2.5em 0em 0 0em rgba(255, 255, 255, .2), 1.75em 1.75em 0 0em rgba(255, 255, 255, .5), 0em 2.5em 0 0em rgba(255, 255, 255, .7), -1.8em 1.8em 0 0em #fff, -2.6em 0em 0 0em rgba(255, 255, 255, .2), -1.8em -1.8em 0 0em rgba(255, 255, 255, .2);\n}\n75% {\n    box-shadow: 0em -2.6em 0em 0em rgba(255, 255, 255, .2), 1.8em -1.8em 0 0em rgba(255, 255, 255, .2), 2.5em 0em 0 0em rgba(255, 255, 255, .2), 1.75em 1.75em 0 0em rgba(255, 255, 255, .2), 0em 2.5em 0 0em rgba(255, 255, 255, .5), -1.8em 1.8em 0 0em rgba(255, 255, 255, .7), -2.6em 0em 0 0em #fff, -1.8em -1.8em 0 0em rgba(255, 255, 255, .2);\n}\n87.5% {\n    box-shadow: 0em -2.6em 0em 0em rgba(255, 255, 255, .2), 1.8em -1.8em 0 0em rgba(255, 255, 255, .2), 2.5em 0em 0 0em rgba(255, 255, 255, .2), 1.75em 1.75em 0 0em rgba(255, 255, 255, .2), 0em 2.5em 0 0em rgba(255, 255, 255, .2), -1.8em 1.8em 0 0em rgba(255, 255, 255, .5), -2.6em 0em 0 0em rgba(255, 255, 255, .7), -1.8em -1.8em 0 0em #fff;\n}\n}\n@keyframes load5-data-v-0eac0937 {\n0%,\n  100% {\n    box-shadow: 0em -2.6em 0em 0em #fff, 1.8em -1.8em 0 0em rgba(255, 255, 255, .2), 2.5em 0em 0 0em rgba(255, 255, 255, .2), 1.75em 1.75em 0 0em rgba(255, 255, 255, .2), 0em 2.5em 0 0em rgba(255, 255, 255, .2), -1.8em 1.8em 0 0em rgba(255, 255, 255, .2), -2.6em 0em 0 0em rgba(255, 255, 255, .5), -1.8em -1.8em 0 0em rgba(255, 255, 255, .7);\n}\n12.5% {\n    box-shadow: 0em -2.6em 0em 0em rgba(255, 255, 255, .7), 1.8em -1.8em 0 0em #fff, 2.5em 0em 0 0em rgba(255, 255, 255, .2), 1.75em 1.75em 0 0em rgba(255, 255, 255, .2), 0em 2.5em 0 0em rgba(255, 255, 255, .2), -1.8em 1.8em 0 0em rgba(255, 255, 255, .2), -2.6em 0em 0 0em rgba(255, 255, 255, .2), -1.8em -1.8em 0 0em rgba(255, 255, 255, .5);\n}\n25% {\n    box-shadow: 0em -2.6em 0em 0em rgba(255, 255, 255, .5), 1.8em -1.8em 0 0em rgba(255, 255, 255, .7), 2.5em 0em 0 0em #fff, 1.75em 1.75em 0 0em rgba(255, 255, 255, .2), 0em 2.5em 0 0em rgba(255, 255, 255, .2), -1.8em 1.8em 0 0em rgba(255, 255, 255, .2), -2.6em 0em 0 0em rgba(255, 255, 255, .2), -1.8em -1.8em 0 0em rgba(255, 255, 255, .2);\n}\n37.5% {\n    box-shadow: 0em -2.6em 0em 0em rgba(255, 255, 255, .2), 1.8em -1.8em 0 0em rgba(255, 255, 255, .5), 2.5em 0em 0 0em rgba(255, 255, 255, .7), 1.75em 1.75em 0 0em #fff, 0em 2.5em 0 0em rgba(255, 255, 255, .2), -1.8em 1.8em 0 0em rgba(255, 255, 255, .2), -2.6em 0em 0 0em rgba(255, 255, 255, .2), -1.8em -1.8em 0 0em rgba(255, 255, 255, .2);\n}\n50% {\n    box-shadow: 0em -2.6em 0em 0em rgba(255, 255, 255, .2), 1.8em -1.8em 0 0em rgba(255, 255, 255, .2), 2.5em 0em 0 0em rgba(255, 255, 255, .5), 1.75em 1.75em 0 0em rgba(255, 255, 255, .7), 0em 2.5em 0 0em #fff, -1.8em 1.8em 0 0em rgba(255, 255, 255, .2), -2.6em 0em 0 0em rgba(255, 255, 255, .2), -1.8em -1.8em 0 0em rgba(255, 255, 255, .2);\n}\n62.5% {\n    box-shadow: 0em -2.6em 0em 0em rgba(255, 255, 255, .2), 1.8em -1.8em 0 0em rgba(255, 255, 255, .2), 2.5em 0em 0 0em rgba(255, 255, 255, .2), 1.75em 1.75em 0 0em rgba(255, 255, 255, .5), 0em 2.5em 0 0em rgba(255, 255, 255, .7), -1.8em 1.8em 0 0em #fff, -2.6em 0em 0 0em rgba(255, 255, 255, .2), -1.8em -1.8em 0 0em rgba(255, 255, 255, .2);\n}\n75% {\n    box-shadow: 0em -2.6em 0em 0em rgba(255, 255, 255, .2), 1.8em -1.8em 0 0em rgba(255, 255, 255, .2), 2.5em 0em 0 0em rgba(255, 255, 255, .2), 1.75em 1.75em 0 0em rgba(255, 255, 255, .2), 0em 2.5em 0 0em rgba(255, 255, 255, .5), -1.8em 1.8em 0 0em rgba(255, 255, 255, .7), -2.6em 0em 0 0em #fff, -1.8em -1.8em 0 0em rgba(255, 255, 255, .2);\n}\n87.5% {\n    box-shadow: 0em -2.6em 0em 0em rgba(255, 255, 255, .2), 1.8em -1.8em 0 0em rgba(255, 255, 255, .2), 2.5em 0em 0 0em rgba(255, 255, 255, .2), 1.75em 1.75em 0 0em rgba(255, 255, 255, .2), 0em 2.5em 0 0em rgba(255, 255, 255, .2), -1.8em 1.8em 0 0em rgba(255, 255, 255, .5), -2.6em 0em 0 0em rgba(255, 255, 255, .7), -1.8em -1.8em 0 0em #fff;\n}\n}\n", ""]);
 
 // exports
 
@@ -3708,7 +3690,7 @@ var staticRenderFns = [
     var _vm = this
     var _h = _vm.$createElement
     var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "loader-bg" }, [
+    return _c("div", { staticClass: "loader-bg z-30" }, [
       _c("div", { staticClass: "loader" }, [
         _c("p", [_vm._v("Now Loading...")])
       ])
@@ -4158,101 +4140,121 @@ var render = function() {
                       "bg-white shadow-md rounded mt-5 mx-1 px-2 sm:px-4 pt-6 pb-8 mb-4"
                   },
                   [
-                    _c(
-                      "form",
-                      {
-                        staticClass: "mb-4",
-                        on: {
-                          submit: function($event) {
-                            $event.preventDefault()
-                            return _vm.submit($event)
-                          }
-                        }
-                      },
-                      [
-                        _c(
-                          "div",
-                          {
-                            staticClass:
-                              "flex items-center border-b border-b-2 border-teal py-2"
-                          },
-                          [
-                            _c("input", {
-                              directives: [
-                                {
-                                  name: "model",
-                                  rawName: "v-model",
-                                  value: _vm.form.id,
-                                  expression: "form.id"
-                                }
-                              ],
-                              staticClass:
-                                "appearance-none bg-transparent border-none w-full text-grey-darker mr-3 py-1 px-2 leading-tight focus:outline-none",
-                              class: { "border-red": _vm.$v.form.id.$error },
-                              attrs: {
-                                type: "text",
-                                placeholder: "Youtube Video ID",
-                                autocomplete: "off",
-                                disabled: _vm.video
-                              },
-                              domProps: { value: _vm.form.id },
-                              on: {
-                                input: function($event) {
-                                  if ($event.target.composing) {
-                                    return
-                                  }
-                                  _vm.$set(_vm.form, "id", $event.target.value)
-                                }
-                              }
-                            }),
-                            _vm._v(" "),
-                            _c(
-                              "button",
-                              {
-                                staticClass:
-                                  "flex-no-shrink bg-teal hover:bg-teal-dark border-teal hover:border-teal-dark text-sm border-4 text-white py-1 px-2 rounded",
-                                class: {
-                                  "opacity-50 cursor-not-allowed": _vm.video
-                                },
-                                attrs: { type: "submit", disabled: _vm.video }
-                              },
-                              [_vm._v("\n              Submit\n            ")]
-                            )
-                          ]
-                        ),
-                        _vm._v(" "),
-                        _c("div", { staticClass: "text-grey text-xs mt-2" }, [
-                          _vm._v(
-                            '\n            "https://www.youtube.com/watch?v=xxxxxx" の "xxxxxx"の部分を入力してください。\n          '
-                          )
-                        ]),
-                        _vm._v(" "),
-                        _vm.$v.form.id.$error && !_vm.$v.form.id.required
-                          ? _c(
-                              "div",
-                              { staticClass: "text-red text-sm mt-2" },
-                              [
-                                _vm._v(
-                                  "\n            youtubeのVideo IDは必須です。\n          "
-                                )
-                              ]
-                            )
-                          : _vm._e()
-                      ]
-                    ),
-                    _vm._v(" "),
                     _vm.video
-                      ? _c("video-card", { attrs: { video: _vm.video } })
-                      : _vm._e(),
-                    _vm._v(" "),
-                    _vm._l(_vm.posts, function(post) {
-                      return _c("chat-card", {
-                        key: post.id,
-                        attrs: { post: post }
-                      })
-                    })
-                  ],
-                  2
+                      ? _c(
+                          "div",
+                          [
+                            _vm.video
+                              ? _c("video-card", {
+                                  attrs: { video: _vm.video }
+                                })
+                              : _vm._e(),
+                            _vm._v(" "),
+                            _vm._l(_vm.posts, function(post) {
+                              return _c("chat-card", {
+                                key: post.id,
+                                attrs: { post: post }
+                              })
+                            })
+                          ],
+                          2
+                        )
+                      : _c("div", [
+                          _c(
+                            "div",
+                            {
+                              staticClass:
+                                "flex justify-between bg-orange-lightest border-l-4 border-orange text-orange-dark p-4",
+                              attrs: { role: "alert" }
+                            },
+                            [
+                              _c("div", [
+                                _c("p", { staticClass: "font-bold mb-1" }, [
+                                  _vm._v("Live配信データ取得")
+                                ]),
+                                _vm._v(" "),
+                                _c("p", { staticClass: "text-xs" }, [
+                                  _vm._v(
+                                    "現在Live配信されているデータありません。"
+                                  )
+                                ])
+                              ]),
+                              _vm._v(" "),
+                              _c(
+                                "div",
+                                {
+                                  staticClass: "py-1",
+                                  on: { click: _vm.loadVideo }
+                                },
+                                [
+                                  _c(
+                                    "svg",
+                                    {
+                                      staticClass:
+                                        "fill-current h-6 w-6 text-icon hover:opacity-75",
+                                      attrs: {
+                                        xmlns: "http://www.w3.org/2000/svg",
+                                        viewBox: "0 0 24 24"
+                                      }
+                                    },
+                                    [
+                                      _c("path", {
+                                        staticStyle: {
+                                          "line-height": "normal",
+                                          "text-indent": "0",
+                                          "text-align": "start",
+                                          "text-decoration-line": "none",
+                                          "text-decoration-style": "solid",
+                                          "text-decoration-color": "#000",
+                                          "text-transform": "none",
+                                          "block-progression": "tb",
+                                          isolation: "auto",
+                                          "mix-blend-mode": "normal"
+                                        },
+                                        attrs: {
+                                          d:
+                                            "M 3.5 2 C 3.372 2 3.2444844 2.0494844 3.1464844 2.1464844 C 2.9514844 2.3414844 2.9514844 2.6585156 3.1464844 2.8535156 L 5.09375 4.8007812 C 3.1950225 6.6199194 2 9.1685121 2 12 C 2 17.511334 6.4886661 22 12 22 C 17.511334 22 22 17.511334 22 12 C 22 6.864114 18.106486 2.6175896 13.109375 2.0644531 A 1.0001 1.0001 0 0 0 13.009766 2.0585938 A 1.0001 1.0001 0 0 0 12.890625 4.0527344 C 16.891514 4.4955979 20 7.871886 20 12 C 20 16.430666 16.430666 20 12 20 C 7.5693339 20 4 16.430666 4 12 C 4 9.7105359 4.967513 7.6643975 6.5039062 6.2109375 L 8.1464844 7.8535156 C 8.3414844 8.0485156 8.6585156 8.0485156 8.8535156 7.8535156 C 8.9515156 7.7565156 9 7.628 9 7.5 L 9 3 A 1 1 0 0 0 8 2 L 3.5 2 z",
+                                          "font-weight": "400",
+                                          "font-family": "sans-serif",
+                                          "white-space": "normal",
+                                          overflow: "visible"
+                                        }
+                                      })
+                                    ]
+                                  )
+                                ]
+                              )
+                            ]
+                          ),
+                          _vm._v(" "),
+                          _c("div", { staticClass: "text-grey text-xs mt-2" }, [
+                            _vm._v(
+                              '\n            ブラウザをリロードするか"リフレッシュ"アイコンからデータの再取得を行ってください。\n          '
+                            )
+                          ]),
+                          _vm._v(" "),
+                          _c(
+                            "div",
+                            { staticClass: "mt-10 text-right" },
+                            [
+                              _c(
+                                "router-link",
+                                {
+                                  staticClass:
+                                    "no-underline hover:underline text-xs text-teal hover:text-grey-darkest",
+                                  attrs: { to: "/archives" }
+                                },
+                                [
+                                  _vm._v(
+                                    "\n              過去の動画を確認する\n            "
+                                  )
+                                ]
+                              )
+                            ],
+                            1
+                          )
+                        ])
+                  ]
                 )
               : _c(
                   "div",
@@ -19128,922 +19130,6 @@ function withParams(paramsOrClosure, maybeValidator) {
 
 /***/ }),
 
-/***/ "./node_modules/vuelidate/lib/validators/alpha.js":
-/*!********************************************************!*\
-  !*** ./node_modules/vuelidate/lib/validators/alpha.js ***!
-  \********************************************************/
-/*! no static exports found */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-exports.default = void 0;
-
-var _common = __webpack_require__(/*! ./common */ "./node_modules/vuelidate/lib/validators/common.js");
-
-var _default = (0, _common.regex)('alpha', /^[a-zA-Z]*$/);
-
-exports.default = _default;
-
-/***/ }),
-
-/***/ "./node_modules/vuelidate/lib/validators/alphaNum.js":
-/*!***********************************************************!*\
-  !*** ./node_modules/vuelidate/lib/validators/alphaNum.js ***!
-  \***********************************************************/
-/*! no static exports found */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-exports.default = void 0;
-
-var _common = __webpack_require__(/*! ./common */ "./node_modules/vuelidate/lib/validators/common.js");
-
-var _default = (0, _common.regex)('alphaNum', /^[a-zA-Z0-9]*$/);
-
-exports.default = _default;
-
-/***/ }),
-
-/***/ "./node_modules/vuelidate/lib/validators/and.js":
-/*!******************************************************!*\
-  !*** ./node_modules/vuelidate/lib/validators/and.js ***!
-  \******************************************************/
-/*! no static exports found */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-exports.default = void 0;
-
-var _common = __webpack_require__(/*! ./common */ "./node_modules/vuelidate/lib/validators/common.js");
-
-var _default = function _default() {
-  for (var _len = arguments.length, validators = new Array(_len), _key = 0; _key < _len; _key++) {
-    validators[_key] = arguments[_key];
-  }
-
-  return (0, _common.withParams)({
-    type: 'and'
-  }, function () {
-    var _this = this;
-
-    for (var _len2 = arguments.length, args = new Array(_len2), _key2 = 0; _key2 < _len2; _key2++) {
-      args[_key2] = arguments[_key2];
-    }
-
-    return validators.length > 0 && validators.reduce(function (valid, fn) {
-      return valid && fn.apply(_this, args);
-    }, true);
-  });
-};
-
-exports.default = _default;
-
-/***/ }),
-
-/***/ "./node_modules/vuelidate/lib/validators/between.js":
-/*!**********************************************************!*\
-  !*** ./node_modules/vuelidate/lib/validators/between.js ***!
-  \**********************************************************/
-/*! no static exports found */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-exports.default = void 0;
-
-var _common = __webpack_require__(/*! ./common */ "./node_modules/vuelidate/lib/validators/common.js");
-
-var _default = function _default(min, max) {
-  return (0, _common.withParams)({
-    type: 'between',
-    min: min,
-    max: max
-  }, function (value) {
-    return !(0, _common.req)(value) || (!/\s/.test(value) || value instanceof Date) && +min <= +value && +max >= +value;
-  });
-};
-
-exports.default = _default;
-
-/***/ }),
-
-/***/ "./node_modules/vuelidate/lib/validators/common.js":
-/*!*********************************************************!*\
-  !*** ./node_modules/vuelidate/lib/validators/common.js ***!
-  \*********************************************************/
-/*! no static exports found */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-Object.defineProperty(exports, "withParams", {
-  enumerable: true,
-  get: function get() {
-    return _withParams.default;
-  }
-});
-exports.regex = exports.ref = exports.len = exports.req = void 0;
-
-var _withParams = _interopRequireDefault(__webpack_require__(/*! ../withParams */ "./node_modules/vuelidate/lib/withParams.js"));
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
-
-var req = function req(value) {
-  if (Array.isArray(value)) return !!value.length;
-
-  if (value === undefined || value === null) {
-    return false;
-  }
-
-  if (value === false) {
-    return true;
-  }
-
-  if (value instanceof Date) {
-    return !isNaN(value.getTime());
-  }
-
-  if (_typeof(value) === 'object') {
-    for (var _ in value) {
-      return true;
-    }
-
-    return false;
-  }
-
-  return !!String(value).length;
-};
-
-exports.req = req;
-
-var len = function len(value) {
-  if (Array.isArray(value)) return value.length;
-
-  if (_typeof(value) === 'object') {
-    return Object.keys(value).length;
-  }
-
-  return String(value).length;
-};
-
-exports.len = len;
-
-var ref = function ref(reference, vm, parentVm) {
-  return typeof reference === 'function' ? reference.call(vm, parentVm) : parentVm[reference];
-};
-
-exports.ref = ref;
-
-var regex = function regex(type, expr) {
-  return (0, _withParams.default)({
-    type: type
-  }, function (value) {
-    return !req(value) || expr.test(value);
-  });
-};
-
-exports.regex = regex;
-
-/***/ }),
-
-/***/ "./node_modules/vuelidate/lib/validators/decimal.js":
-/*!**********************************************************!*\
-  !*** ./node_modules/vuelidate/lib/validators/decimal.js ***!
-  \**********************************************************/
-/*! no static exports found */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-exports.default = void 0;
-
-var _common = __webpack_require__(/*! ./common */ "./node_modules/vuelidate/lib/validators/common.js");
-
-var _default = (0, _common.regex)('decimal', /^[-]?\d*(\.\d+)?$/);
-
-exports.default = _default;
-
-/***/ }),
-
-/***/ "./node_modules/vuelidate/lib/validators/email.js":
-/*!********************************************************!*\
-  !*** ./node_modules/vuelidate/lib/validators/email.js ***!
-  \********************************************************/
-/*! no static exports found */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-exports.default = void 0;
-
-var _common = __webpack_require__(/*! ./common */ "./node_modules/vuelidate/lib/validators/common.js");
-
-var emailRegex = /(^$|^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$)/;
-
-var _default = (0, _common.regex)('email', emailRegex);
-
-exports.default = _default;
-
-/***/ }),
-
-/***/ "./node_modules/vuelidate/lib/validators/index.js":
-/*!********************************************************!*\
-  !*** ./node_modules/vuelidate/lib/validators/index.js ***!
-  \********************************************************/
-/*! no static exports found */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-Object.defineProperty(exports, "alpha", {
-  enumerable: true,
-  get: function get() {
-    return _alpha.default;
-  }
-});
-Object.defineProperty(exports, "alphaNum", {
-  enumerable: true,
-  get: function get() {
-    return _alphaNum.default;
-  }
-});
-Object.defineProperty(exports, "numeric", {
-  enumerable: true,
-  get: function get() {
-    return _numeric.default;
-  }
-});
-Object.defineProperty(exports, "between", {
-  enumerable: true,
-  get: function get() {
-    return _between.default;
-  }
-});
-Object.defineProperty(exports, "email", {
-  enumerable: true,
-  get: function get() {
-    return _email.default;
-  }
-});
-Object.defineProperty(exports, "ipAddress", {
-  enumerable: true,
-  get: function get() {
-    return _ipAddress.default;
-  }
-});
-Object.defineProperty(exports, "macAddress", {
-  enumerable: true,
-  get: function get() {
-    return _macAddress.default;
-  }
-});
-Object.defineProperty(exports, "maxLength", {
-  enumerable: true,
-  get: function get() {
-    return _maxLength.default;
-  }
-});
-Object.defineProperty(exports, "minLength", {
-  enumerable: true,
-  get: function get() {
-    return _minLength.default;
-  }
-});
-Object.defineProperty(exports, "required", {
-  enumerable: true,
-  get: function get() {
-    return _required.default;
-  }
-});
-Object.defineProperty(exports, "requiredIf", {
-  enumerable: true,
-  get: function get() {
-    return _requiredIf.default;
-  }
-});
-Object.defineProperty(exports, "requiredUnless", {
-  enumerable: true,
-  get: function get() {
-    return _requiredUnless.default;
-  }
-});
-Object.defineProperty(exports, "sameAs", {
-  enumerable: true,
-  get: function get() {
-    return _sameAs.default;
-  }
-});
-Object.defineProperty(exports, "url", {
-  enumerable: true,
-  get: function get() {
-    return _url.default;
-  }
-});
-Object.defineProperty(exports, "or", {
-  enumerable: true,
-  get: function get() {
-    return _or.default;
-  }
-});
-Object.defineProperty(exports, "and", {
-  enumerable: true,
-  get: function get() {
-    return _and.default;
-  }
-});
-Object.defineProperty(exports, "not", {
-  enumerable: true,
-  get: function get() {
-    return _not.default;
-  }
-});
-Object.defineProperty(exports, "minValue", {
-  enumerable: true,
-  get: function get() {
-    return _minValue.default;
-  }
-});
-Object.defineProperty(exports, "maxValue", {
-  enumerable: true,
-  get: function get() {
-    return _maxValue.default;
-  }
-});
-Object.defineProperty(exports, "integer", {
-  enumerable: true,
-  get: function get() {
-    return _integer.default;
-  }
-});
-Object.defineProperty(exports, "decimal", {
-  enumerable: true,
-  get: function get() {
-    return _decimal.default;
-  }
-});
-exports.helpers = void 0;
-
-var _alpha = _interopRequireDefault(__webpack_require__(/*! ./alpha */ "./node_modules/vuelidate/lib/validators/alpha.js"));
-
-var _alphaNum = _interopRequireDefault(__webpack_require__(/*! ./alphaNum */ "./node_modules/vuelidate/lib/validators/alphaNum.js"));
-
-var _numeric = _interopRequireDefault(__webpack_require__(/*! ./numeric */ "./node_modules/vuelidate/lib/validators/numeric.js"));
-
-var _between = _interopRequireDefault(__webpack_require__(/*! ./between */ "./node_modules/vuelidate/lib/validators/between.js"));
-
-var _email = _interopRequireDefault(__webpack_require__(/*! ./email */ "./node_modules/vuelidate/lib/validators/email.js"));
-
-var _ipAddress = _interopRequireDefault(__webpack_require__(/*! ./ipAddress */ "./node_modules/vuelidate/lib/validators/ipAddress.js"));
-
-var _macAddress = _interopRequireDefault(__webpack_require__(/*! ./macAddress */ "./node_modules/vuelidate/lib/validators/macAddress.js"));
-
-var _maxLength = _interopRequireDefault(__webpack_require__(/*! ./maxLength */ "./node_modules/vuelidate/lib/validators/maxLength.js"));
-
-var _minLength = _interopRequireDefault(__webpack_require__(/*! ./minLength */ "./node_modules/vuelidate/lib/validators/minLength.js"));
-
-var _required = _interopRequireDefault(__webpack_require__(/*! ./required */ "./node_modules/vuelidate/lib/validators/required.js"));
-
-var _requiredIf = _interopRequireDefault(__webpack_require__(/*! ./requiredIf */ "./node_modules/vuelidate/lib/validators/requiredIf.js"));
-
-var _requiredUnless = _interopRequireDefault(__webpack_require__(/*! ./requiredUnless */ "./node_modules/vuelidate/lib/validators/requiredUnless.js"));
-
-var _sameAs = _interopRequireDefault(__webpack_require__(/*! ./sameAs */ "./node_modules/vuelidate/lib/validators/sameAs.js"));
-
-var _url = _interopRequireDefault(__webpack_require__(/*! ./url */ "./node_modules/vuelidate/lib/validators/url.js"));
-
-var _or = _interopRequireDefault(__webpack_require__(/*! ./or */ "./node_modules/vuelidate/lib/validators/or.js"));
-
-var _and = _interopRequireDefault(__webpack_require__(/*! ./and */ "./node_modules/vuelidate/lib/validators/and.js"));
-
-var _not = _interopRequireDefault(__webpack_require__(/*! ./not */ "./node_modules/vuelidate/lib/validators/not.js"));
-
-var _minValue = _interopRequireDefault(__webpack_require__(/*! ./minValue */ "./node_modules/vuelidate/lib/validators/minValue.js"));
-
-var _maxValue = _interopRequireDefault(__webpack_require__(/*! ./maxValue */ "./node_modules/vuelidate/lib/validators/maxValue.js"));
-
-var _integer = _interopRequireDefault(__webpack_require__(/*! ./integer */ "./node_modules/vuelidate/lib/validators/integer.js"));
-
-var _decimal = _interopRequireDefault(__webpack_require__(/*! ./decimal */ "./node_modules/vuelidate/lib/validators/decimal.js"));
-
-var helpers = _interopRequireWildcard(__webpack_require__(/*! ./common */ "./node_modules/vuelidate/lib/validators/common.js"));
-
-exports.helpers = helpers;
-
-function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) { var desc = Object.defineProperty && Object.getOwnPropertyDescriptor ? Object.getOwnPropertyDescriptor(obj, key) : {}; if (desc.get || desc.set) { Object.defineProperty(newObj, key, desc); } else { newObj[key] = obj[key]; } } } } newObj.default = obj; return newObj; } }
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-/***/ }),
-
-/***/ "./node_modules/vuelidate/lib/validators/integer.js":
-/*!**********************************************************!*\
-  !*** ./node_modules/vuelidate/lib/validators/integer.js ***!
-  \**********************************************************/
-/*! no static exports found */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-exports.default = void 0;
-
-var _common = __webpack_require__(/*! ./common */ "./node_modules/vuelidate/lib/validators/common.js");
-
-var _default = (0, _common.regex)('integer', /^-?[0-9]*$/);
-
-exports.default = _default;
-
-/***/ }),
-
-/***/ "./node_modules/vuelidate/lib/validators/ipAddress.js":
-/*!************************************************************!*\
-  !*** ./node_modules/vuelidate/lib/validators/ipAddress.js ***!
-  \************************************************************/
-/*! no static exports found */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-exports.default = void 0;
-
-var _common = __webpack_require__(/*! ./common */ "./node_modules/vuelidate/lib/validators/common.js");
-
-var _default = (0, _common.withParams)({
-  type: 'ipAddress'
-}, function (value) {
-  if (!(0, _common.req)(value)) {
-    return true;
-  }
-
-  if (typeof value !== 'string') {
-    return false;
-  }
-
-  var nibbles = value.split('.');
-  return nibbles.length === 4 && nibbles.every(nibbleValid);
-});
-
-exports.default = _default;
-
-var nibbleValid = function nibbleValid(nibble) {
-  if (nibble.length > 3 || nibble.length === 0) {
-    return false;
-  }
-
-  if (nibble[0] === '0' && nibble !== '0') {
-    return false;
-  }
-
-  if (!nibble.match(/^\d+$/)) {
-    return false;
-  }
-
-  var numeric = +nibble | 0;
-  return numeric >= 0 && numeric <= 255;
-};
-
-/***/ }),
-
-/***/ "./node_modules/vuelidate/lib/validators/macAddress.js":
-/*!*************************************************************!*\
-  !*** ./node_modules/vuelidate/lib/validators/macAddress.js ***!
-  \*************************************************************/
-/*! no static exports found */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-exports.default = void 0;
-
-var _common = __webpack_require__(/*! ./common */ "./node_modules/vuelidate/lib/validators/common.js");
-
-var _default = function _default() {
-  var separator = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : ':';
-  return (0, _common.withParams)({
-    type: 'macAddress'
-  }, function (value) {
-    if (!(0, _common.req)(value)) {
-      return true;
-    }
-
-    if (typeof value !== 'string') {
-      return false;
-    }
-
-    var parts = typeof separator === 'string' && separator !== '' ? value.split(separator) : value.length === 12 || value.length === 16 ? value.match(/.{2}/g) : null;
-    return parts !== null && (parts.length === 6 || parts.length === 8) && parts.every(hexValid);
-  });
-};
-
-exports.default = _default;
-
-var hexValid = function hexValid(hex) {
-  return hex.toLowerCase().match(/^[0-9a-f]{2}$/);
-};
-
-/***/ }),
-
-/***/ "./node_modules/vuelidate/lib/validators/maxLength.js":
-/*!************************************************************!*\
-  !*** ./node_modules/vuelidate/lib/validators/maxLength.js ***!
-  \************************************************************/
-/*! no static exports found */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-exports.default = void 0;
-
-var _common = __webpack_require__(/*! ./common */ "./node_modules/vuelidate/lib/validators/common.js");
-
-var _default = function _default(length) {
-  return (0, _common.withParams)({
-    type: 'maxLength',
-    max: length
-  }, function (value) {
-    return !(0, _common.req)(value) || (0, _common.len)(value) <= length;
-  });
-};
-
-exports.default = _default;
-
-/***/ }),
-
-/***/ "./node_modules/vuelidate/lib/validators/maxValue.js":
-/*!***********************************************************!*\
-  !*** ./node_modules/vuelidate/lib/validators/maxValue.js ***!
-  \***********************************************************/
-/*! no static exports found */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-exports.default = void 0;
-
-var _common = __webpack_require__(/*! ./common */ "./node_modules/vuelidate/lib/validators/common.js");
-
-var _default = function _default(max) {
-  return (0, _common.withParams)({
-    type: 'maxValue',
-    max: max
-  }, function (value) {
-    return !(0, _common.req)(value) || (!/\s/.test(value) || value instanceof Date) && +value <= +max;
-  });
-};
-
-exports.default = _default;
-
-/***/ }),
-
-/***/ "./node_modules/vuelidate/lib/validators/minLength.js":
-/*!************************************************************!*\
-  !*** ./node_modules/vuelidate/lib/validators/minLength.js ***!
-  \************************************************************/
-/*! no static exports found */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-exports.default = void 0;
-
-var _common = __webpack_require__(/*! ./common */ "./node_modules/vuelidate/lib/validators/common.js");
-
-var _default = function _default(length) {
-  return (0, _common.withParams)({
-    type: 'minLength',
-    min: length
-  }, function (value) {
-    return !(0, _common.req)(value) || (0, _common.len)(value) >= length;
-  });
-};
-
-exports.default = _default;
-
-/***/ }),
-
-/***/ "./node_modules/vuelidate/lib/validators/minValue.js":
-/*!***********************************************************!*\
-  !*** ./node_modules/vuelidate/lib/validators/minValue.js ***!
-  \***********************************************************/
-/*! no static exports found */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-exports.default = void 0;
-
-var _common = __webpack_require__(/*! ./common */ "./node_modules/vuelidate/lib/validators/common.js");
-
-var _default = function _default(min) {
-  return (0, _common.withParams)({
-    type: 'minValue',
-    min: min
-  }, function (value) {
-    return !(0, _common.req)(value) || (!/\s/.test(value) || value instanceof Date) && +value >= +min;
-  });
-};
-
-exports.default = _default;
-
-/***/ }),
-
-/***/ "./node_modules/vuelidate/lib/validators/not.js":
-/*!******************************************************!*\
-  !*** ./node_modules/vuelidate/lib/validators/not.js ***!
-  \******************************************************/
-/*! no static exports found */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-exports.default = void 0;
-
-var _common = __webpack_require__(/*! ./common */ "./node_modules/vuelidate/lib/validators/common.js");
-
-var _default = function _default(validator) {
-  return (0, _common.withParams)({
-    type: 'not'
-  }, function (value, vm) {
-    return !(0, _common.req)(value) || !validator.call(this, value, vm);
-  });
-};
-
-exports.default = _default;
-
-/***/ }),
-
-/***/ "./node_modules/vuelidate/lib/validators/numeric.js":
-/*!**********************************************************!*\
-  !*** ./node_modules/vuelidate/lib/validators/numeric.js ***!
-  \**********************************************************/
-/*! no static exports found */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-exports.default = void 0;
-
-var _common = __webpack_require__(/*! ./common */ "./node_modules/vuelidate/lib/validators/common.js");
-
-var _default = (0, _common.regex)('numeric', /^[0-9]*$/);
-
-exports.default = _default;
-
-/***/ }),
-
-/***/ "./node_modules/vuelidate/lib/validators/or.js":
-/*!*****************************************************!*\
-  !*** ./node_modules/vuelidate/lib/validators/or.js ***!
-  \*****************************************************/
-/*! no static exports found */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-exports.default = void 0;
-
-var _common = __webpack_require__(/*! ./common */ "./node_modules/vuelidate/lib/validators/common.js");
-
-var _default = function _default() {
-  for (var _len = arguments.length, validators = new Array(_len), _key = 0; _key < _len; _key++) {
-    validators[_key] = arguments[_key];
-  }
-
-  return (0, _common.withParams)({
-    type: 'or'
-  }, function () {
-    var _this = this;
-
-    for (var _len2 = arguments.length, args = new Array(_len2), _key2 = 0; _key2 < _len2; _key2++) {
-      args[_key2] = arguments[_key2];
-    }
-
-    return validators.length > 0 && validators.reduce(function (valid, fn) {
-      return valid || fn.apply(_this, args);
-    }, false);
-  });
-};
-
-exports.default = _default;
-
-/***/ }),
-
-/***/ "./node_modules/vuelidate/lib/validators/required.js":
-/*!***********************************************************!*\
-  !*** ./node_modules/vuelidate/lib/validators/required.js ***!
-  \***********************************************************/
-/*! no static exports found */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-exports.default = void 0;
-
-var _common = __webpack_require__(/*! ./common */ "./node_modules/vuelidate/lib/validators/common.js");
-
-var _default = (0, _common.withParams)({
-  type: 'required'
-}, _common.req);
-
-exports.default = _default;
-
-/***/ }),
-
-/***/ "./node_modules/vuelidate/lib/validators/requiredIf.js":
-/*!*************************************************************!*\
-  !*** ./node_modules/vuelidate/lib/validators/requiredIf.js ***!
-  \*************************************************************/
-/*! no static exports found */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-exports.default = void 0;
-
-var _common = __webpack_require__(/*! ./common */ "./node_modules/vuelidate/lib/validators/common.js");
-
-var _default = function _default(prop) {
-  return (0, _common.withParams)({
-    type: 'requiredIf',
-    prop: prop
-  }, function (value, parentVm) {
-    return (0, _common.ref)(prop, this, parentVm) ? (0, _common.req)(value) : true;
-  });
-};
-
-exports.default = _default;
-
-/***/ }),
-
-/***/ "./node_modules/vuelidate/lib/validators/requiredUnless.js":
-/*!*****************************************************************!*\
-  !*** ./node_modules/vuelidate/lib/validators/requiredUnless.js ***!
-  \*****************************************************************/
-/*! no static exports found */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-exports.default = void 0;
-
-var _common = __webpack_require__(/*! ./common */ "./node_modules/vuelidate/lib/validators/common.js");
-
-var _default = function _default(prop) {
-  return (0, _common.withParams)({
-    type: 'requiredUnless',
-    prop: prop
-  }, function (value, parentVm) {
-    return !(0, _common.ref)(prop, this, parentVm) ? (0, _common.req)(value) : true;
-  });
-};
-
-exports.default = _default;
-
-/***/ }),
-
-/***/ "./node_modules/vuelidate/lib/validators/sameAs.js":
-/*!*********************************************************!*\
-  !*** ./node_modules/vuelidate/lib/validators/sameAs.js ***!
-  \*********************************************************/
-/*! no static exports found */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-exports.default = void 0;
-
-var _common = __webpack_require__(/*! ./common */ "./node_modules/vuelidate/lib/validators/common.js");
-
-var _default = function _default(equalTo) {
-  return (0, _common.withParams)({
-    type: 'sameAs',
-    eq: equalTo
-  }, function (value, parentVm) {
-    return value === (0, _common.ref)(equalTo, this, parentVm);
-  });
-};
-
-exports.default = _default;
-
-/***/ }),
-
-/***/ "./node_modules/vuelidate/lib/validators/url.js":
-/*!******************************************************!*\
-  !*** ./node_modules/vuelidate/lib/validators/url.js ***!
-  \******************************************************/
-/*! no static exports found */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-exports.default = void 0;
-
-var _common = __webpack_require__(/*! ./common */ "./node_modules/vuelidate/lib/validators/common.js");
-
-var urlRegex = /^(?:(?:https?|ftp):\/\/)(?:\S+(?::\S*)?@)?(?:(?!(?:10|127)(?:\.\d{1,3}){3})(?!(?:169\.254|192\.168)(?:\.\d{1,3}){2})(?!172\.(?:1[6-9]|2\d|3[0-1])(?:\.\d{1,3}){2})(?:[1-9]\d?|1\d\d|2[01]\d|22[0-3])(?:\.(?:1?\d{1,2}|2[0-4]\d|25[0-5])){2}(?:\.(?:[1-9]\d?|1\d\d|2[0-4]\d|25[0-4]))|(?:(?:[a-z\u00a1-\uffff0-9]-*)*[a-z\u00a1-\uffff0-9]+)(?:\.(?:[a-z\u00a1-\uffff0-9]-*)*[a-z\u00a1-\uffff0-9]+)*(?:\.(?:[a-z\u00a1-\uffff]{2,})))(?::\d{2,5})?(?:[/?#]\S*)?$/i;
-
-var _default = (0, _common.regex)('url', urlRegex);
-
-exports.default = _default;
-
-/***/ }),
-
 /***/ "./node_modules/vuelidate/lib/vval.js":
 /*!********************************************!*\
   !*** ./node_modules/vuelidate/lib/vval.js ***!
@@ -20205,59 +19291,6 @@ function h(tag, key, args) {
     args: args
   };
 }
-
-/***/ }),
-
-/***/ "./node_modules/vuelidate/lib/withParams.js":
-/*!**************************************************!*\
-  !*** ./node_modules/vuelidate/lib/withParams.js ***!
-  \**************************************************/
-/*! no static exports found */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-exports.default = void 0;
-var withParams = Object({"MIX_PUSHER_APP_KEY":"","MIX_PUSHER_APP_CLUSTER":"mt1","MIX_APP_NAME":"LiveLog","MIX_APP_DESCRIPTION":"YoutubeのLiveチャットのログを記録します。","NODE_ENV":"development"}).BUILD === 'web' ? __webpack_require__(/*! ./withParamsBrowser */ "./node_modules/vuelidate/lib/withParamsBrowser.js").withParams : __webpack_require__(/*! ./params */ "./node_modules/vuelidate/lib/params.js").withParams;
-var _default = withParams;
-exports.default = _default;
-
-/***/ }),
-
-/***/ "./node_modules/vuelidate/lib/withParamsBrowser.js":
-/*!*********************************************************!*\
-  !*** ./node_modules/vuelidate/lib/withParamsBrowser.js ***!
-  \*********************************************************/
-/*! no static exports found */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-/* WEBPACK VAR INJECTION */(function(global) {
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-exports.withParams = void 0;
-
-function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
-
-var root = typeof window !== 'undefined' ? window : typeof global !== 'undefined' ? global : {};
-
-var fakeWithParams = function fakeWithParams(paramsOrClosure, maybeValidator) {
-  if (_typeof(paramsOrClosure) === 'object' && maybeValidator !== undefined) {
-    return maybeValidator;
-  }
-
-  return paramsOrClosure(function () {});
-};
-
-var withParams = root.vuelidate ? root.vuelidate.withParams : fakeWithParams;
-exports.withParams = withParams;
-/* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(/*! ./../../webpack/buildin/global.js */ "./node_modules/webpack/buildin/global.js")))
 
 /***/ }),
 

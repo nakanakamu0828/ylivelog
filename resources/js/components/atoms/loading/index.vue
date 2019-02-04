@@ -1,5 +1,5 @@
 <template>
-    <div class="loader-bg">
+    <div class="loader-bg z-30">
         <div class="loader">
             <p>Now Loading...</p>
         </div>
@@ -16,7 +16,6 @@
   height: 100%;
   top: 0;
   left: 0;
-  z-index: 1;
   opacity: .5;
 }
 .loader {
