@@ -17,7 +17,7 @@ class VideoController extends Controller
     public function show(Request $request, $id)
     {
         $video = Auth::user()->videos()->findOrFail($id);
-        $posts = Post::where('v', $video->id)->orderBy('published_at', 'desc')->paginate();
+        $posts = Post::where('v', $video->id)->orderBy('published_at', 'desc')->paginate(100);
         return [
             'video' => $video,
             'posts' => $posts,
