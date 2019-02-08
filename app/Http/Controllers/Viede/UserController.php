@@ -10,6 +10,8 @@ use Auth;
 
 class UserController extends Controller
 {
+    private $users = [];
+
     public function download(Request $request, int $id)
     {
 
@@ -17,12 +19,11 @@ class UserController extends Controller
         return  new StreamedResponse(
             function () use($video) {
                 $stream = fopen('php://output', 'w');
-                $users = [];
-                Post::where('v', $video->id)->orderBy('published_at', 'desc')->chunk(100, function ($posts) use ($stream, $users) {
+                Post::where('v', $video->id)->orderBy('published_at', 'desc')->chunk(100, function ($posts) use ($stream) {
                     foreach ($posts as $post) {
-                        if (!in_array($post->autor_display_name, $users, true)) {
+                        if (!in_array($post->autor_display_name, $this->users, true)) {
                             fputcsv($stream, [ $post->autor_display_name ]);
-                            $users[] = $post->autor_display_name;
+                            $this->users[] = $post->autor_display_name;
                         }
                     }
                 });
