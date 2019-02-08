@@ -14,7 +14,7 @@ class VideoController extends Controller
         return Auth::user()->videos()->orderBy('created_at', 'desc')->paginate();
     }
 
-    public function show(Request $request, $id)
+    public function show(Request $request, int $id)
     {
         $video = Auth::user()->videos()->findOrFail($id);
         $posts = Post::where('v', $video->id)->orderBy('published_at', 'desc')->paginate(100);
@@ -23,6 +23,15 @@ class VideoController extends Controller
             'posts' => $posts,
             'next'  => $posts->lastPage() > $posts->currentPage() ? $posts->currentPage() + 1 : null,
         ];
+    }
+
+    public function destroy(int $id)
+    {
+        $video = Auth::user()->videos()->findOrFail($id);
+        Post::where('v', $video->id)->delete();
+        $video->delete();
+
+        return response('', 200);
     }
 
 }

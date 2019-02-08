@@ -11,7 +11,7 @@
 |
 */
 
-Route::get('welcome', 'WelcomeController@index')->name('welcome');
+// Route::get('welcome', 'WelcomeController@index')->name('welcome');
 
 
 // OAuth
@@ -22,6 +22,11 @@ Route::group(['middleware' => ['guest'], 'prefix' => 'oauth', 'as' => 'oauth.'],
         ]
     )->where('provider', 'google');
     Route::get('callback/{provider}', 'Auth\OAuthLoginController@callback')->where('provider', 'google');
+});
+
+Route::group(['middleware' => 'auth', 'prefix' => 'video', 'as' => 'video.'], function () {
+    Route::get('{id}/chat/download', 'Viede\ChatController@download')->name('chat.download');
+    Route::get('{id}/user/download', 'Viede\UserController@download')->name('user.download');
 });
 
 

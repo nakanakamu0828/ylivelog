@@ -23,7 +23,7 @@
 
 
 <script>
-import MenuDropdown from '~/components/molecules/menu-dropdown'
+import MenuDropdown from '~/components/molecules/dropdowns/menu-dropdown'
 
 export default {
   components: { MenuDropdown },

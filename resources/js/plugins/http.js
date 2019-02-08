@@ -29,5 +29,19 @@ export default {
             ok: response.ok,
             data: json
         }
+    },
+    async delete (url) {
+        const method = "DELETE";
+        const headers = {
+            'X-XSRF-TOKEN': window.$cookies.get('XSRF-TOKEN')
+        }
+        const response = await fetch(url, {
+            method,
+            headers
+        })
+        return {
+            status: response.status,
+            ok: response.ok,
+        }
     }
 }

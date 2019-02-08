@@ -1,5 +1,5 @@
 <template>
-  <div class="relative z-10">
+  <div class="relative z-30">
       <img
         class="w-10 h-10 rounded-full hover:opacity-75"
         :src="user.profile_image_url"

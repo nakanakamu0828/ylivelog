@@ -9,7 +9,7 @@ use Auth;
 
 class PostController extends Controller
 {
-    public function index(Request $request, $id)
+    public function index(Request $request, int $id)
     {
         $video = Auth::user()->videos()->findOrFail($id);
         $posts = Post::where('v', $video->id)->orderBy('published_at', 'desc')->paginate(100);

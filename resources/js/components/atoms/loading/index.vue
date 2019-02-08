@@ -1,5 +1,5 @@
 <template>
-    <div class="loader-bg z-30">
+    <div class="loader-bg z-50">
         <div class="loader">
             <p>Now Loading...</p>
         </div>

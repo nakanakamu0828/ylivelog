@@ -24,6 +24,7 @@ Route::group(['middleware' => 'auth'], function () {
     Route::get('/videos', 'Api\VideoController@index')->name('video');
     Route::group(['prefix' => 'video', 'as' => 'video.'], function () {
         Route::get('{id}', 'Api\VideoController@show')->name('show');
+        Route::delete('{id}', 'Api\VideoController@destroy')->name('destroy');
         Route::get('{id}/chats', 'Api\Video\PostController@index')->name('chats');
     });
 });
