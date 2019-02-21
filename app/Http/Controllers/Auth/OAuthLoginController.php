@@ -55,8 +55,8 @@ class OAuthLoginController extends Controller
     protected function scopeGoogle()
     {
         return  [
-            'https://www.googleapis.com/auth/plus.me',
-            'https://www.googleapis.com/auth/plus.profile.emails.read',
+            // 'https://www.googleapis.com/auth/plus.me',
+            // 'https://www.googleapis.com/auth/plus.profile.emails.read',
             'https://www.googleapis.com/auth/youtube'
         ];
     }
