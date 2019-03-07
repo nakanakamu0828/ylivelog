@@ -72,7 +72,7 @@ export default {
   }),
   methods: {
     async loadVideos() {
-      const response = await http.get(this.next || '/api/videos')
+      const response = await http.get(this.next ? `/api/videos?page=${this.next}` : '/api/videos')
       if (!response.ok) {
         this.alertType = 'error';
         this.alertMessage = {
