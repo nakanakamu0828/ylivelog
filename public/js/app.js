@@ -997,7 +997,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
             switch (_context.prev = _context.next) {
               case 0:
                 _context.next = 2;
-                return _plugins_http_js__WEBPACK_IMPORTED_MODULE_1__["default"].get(this.next || '/api/videos');
+                return _plugins_http_js__WEBPACK_IMPORTED_MODULE_1__["default"].get(this.next ? "/api/videos?page=".concat(this.next) : '/api/videos');
 
               case 2:
                 response = _context.sent;
@@ -1015,8 +1015,8 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
                 return _context.abrupt("return");
 
               case 7:
-                this.next = response.data.next_page_url;
-                this.videos = [].concat(_toConsumableArray(this.videos), _toConsumableArray(response.data.data));
+                this.next = response.data.next;
+                this.videos = [].concat(_toConsumableArray(this.videos), _toConsumableArray(response.data.videos.data));
 
               case 9:
               case "end":

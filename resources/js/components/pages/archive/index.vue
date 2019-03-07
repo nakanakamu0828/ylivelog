@@ -82,8 +82,8 @@ export default {
         return
       }
 
-      this.next = response.data.next_page_url
-      this.videos = [...this.videos, ...response.data.data]
+      this.next = response.data.next
+      this.videos = [...this.videos, ...response.data.videos.data]
     },
     closeSuccessAlert() {
       this.alertMessage = null

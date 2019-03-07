@@ -11,7 +11,13 @@ class VideoController extends Controller
 {
     public function index(Request $request)
     {
-        return Auth::user()->videos()->orderBy('created_at', 'desc')->paginate();
+        $videos = Auth::user()->videos()->orderBy('created_at', 'desc')->paginate(2);
+        return [
+            'videos'    => $videos,
+            'next'      => $videos->lastPage() > $videos->currentPage() ? $videos->currentPage() + 1 : null,
+            'lastPage'  => $videos->lastPage(),
+            'currentPage'  => $videos->currentPage(),
+        ];
     }
 
     public function show(Request $request, int $id)
