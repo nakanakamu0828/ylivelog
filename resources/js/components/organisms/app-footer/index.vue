@@ -31,7 +31,7 @@
       </div>
       <div class="flex">
         <div class="w-full text-center text-xs">
-          © nnn
+          Copyright © 2018 @nnn All Rights Reserved.
         </div>
       </div>
     </div>

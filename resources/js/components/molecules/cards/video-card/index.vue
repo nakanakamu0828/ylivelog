@@ -11,7 +11,7 @@
     >
     </div>
     <div class="border-r border-b border-l border-grey-light border-l-0 border-t border-grey-light bg-white rounded-b rounded-b-none rounded-r p-2 md:p-4 flex flex-col justify-between w-full">
-      <div class="text-black font-bold text-lg mb-4" v-text="video.title"></div>
+      <div class="text-black font-bold text-md mb-4" v-text="video.title"></div>
     </div>
   </router-link>
 </template>
