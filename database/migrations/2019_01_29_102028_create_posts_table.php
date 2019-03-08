@@ -22,8 +22,6 @@ class CreatePostsTable extends Migration
      */
     public function up()
     {
-        if ('testing' === config('app.env')) return;
-
         Schema::connection($this->connection)->table('posts_collection', function (Blueprint $collection) 
         {
             $collection->unique('id');
@@ -38,8 +36,6 @@ class CreatePostsTable extends Migration
      */
     public function down()
     {
-        if ('testing' === config('app.env')) return;
-        
         Schema::connection($this->connection)->table('posts_collection', function (Blueprint $collection) 
         {
             $collection->drop();
