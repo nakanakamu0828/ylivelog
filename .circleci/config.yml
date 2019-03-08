@@ -24,11 +24,11 @@ jobs:
 
       - run: sudo apt update # PHP CircleCI 2.0 Configuration File# PHP CircleCI 2.0 Configuration File sudo apt install zlib1g-dev libsqlite3-dev
       - run: sudo docker-php-ext-install zip
-      - run: sudo docker-php-ext-install mongodb
+      # - run: sudo docker-php-ext-install mongodb
 
-      # - run: sudo pecl channel-update pecl.php.net
-      # - run: sudo pecl install mongodb
-      # - run: sudo pecl config-set php_ini "${PHP_INI_DIR}/php.ini"
+      - run: sudo pecl channel-update pecl.php.net
+      - run: sudo pecl install mongodb
+      - run: echo 'extension=mongodb.so' | sudo tee /usr/local/etc/php/conf.d/mongodb.ini
 
       # Download and cache dependencies
       - restore_cache:
