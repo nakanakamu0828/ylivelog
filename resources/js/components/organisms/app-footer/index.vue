@@ -1,7 +1,10 @@
 <template>
   <footer class="bg-grey-darkest text-white p-6">
     <div class="container mx-auto px-4">
-      <div class="flex flex-wrap">
+      <div
+        class="flex flex-wrap"
+        v-if="isLoggined"
+      >
         <div class="w-full md:w-1/5 mb-4">
         </div>
         <div class="w-full md:w-3/5 mb-4 text-xs sm:text-sm text-center">
@@ -13,17 +16,10 @@
           </router-link>
           &nbsp;/&nbsp;
           <router-link
-            to="/"
+            to="/archives"
             class="text-white hover:text-grey-dark no-underline"
           >
-            利用規約
-          </router-link>
-          &nbsp;/&nbsp;
-          <router-link
-            to="/"
-            class="text-white hover:text-grey-dark no-underline"
-          >
-            プライバシーポリシー
+            動画アーカイブ
           </router-link>
         </div>
         <div class="w-full md:w-1/5 mb-4 flex justify-center">
@@ -43,6 +39,11 @@
 export default {
   components: {},
   data: () => ({
-  })
+  }),
+  computed: {
+    isLoggined () {
+      return this.$store.getters['auth/isLoggined']
+    }
+  }
 }
 </script>
